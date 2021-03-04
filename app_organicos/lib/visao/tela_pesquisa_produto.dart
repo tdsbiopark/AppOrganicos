@@ -79,7 +79,10 @@ class _TelaPesquisaProdutoState extends State<TelaPesquisaProduto> {
             color: indice % 2 == 0 ? Colors.grey.shade300 : Colors.white),
         child: ListTile(
             title: new Text(produto.nome,
-                style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.normal),
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.normal),
                 textAlign: TextAlign.left)));
   }
 
@@ -93,7 +96,8 @@ class _TelaPesquisaProdutoState extends State<TelaPesquisaProduto> {
             _controle.produtoEmEdicao = Produto();
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => TelaCadastroProduto(this._controle)),
+              MaterialPageRoute(
+                  builder: (context) => TelaCadastroProduto(this._controle)),
             );
           },
         ),
@@ -113,7 +117,8 @@ class _TelaPesquisaProdutoState extends State<TelaPesquisaProduto> {
               return ListView.builder(
                 itemCount: _controle.produtosPesquisados.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return _linhaListaZebrada(_controle.produtosPesquisados[index], index);
+                  return _linhaListaZebrada(
+                      _controle.produtosPesquisados[index], index);
                 },
               );
             }));

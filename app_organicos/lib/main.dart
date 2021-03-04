@@ -1,4 +1,3 @@
-import 'package:app_organicos/dao/conexao.dart';
 import 'package:app_organicos/visao/tela_pesquisa_produto.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'App Organicos IFPR',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
