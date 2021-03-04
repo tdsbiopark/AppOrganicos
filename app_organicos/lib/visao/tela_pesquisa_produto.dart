@@ -2,6 +2,7 @@ import 'package:app_organicos/controle/controle_produto.dart';
 import 'package:app_organicos/modelo/produto.dart';
 import 'package:app_organicos/visao/tela_cadastro_produto.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class TelaPesquisaProduto extends StatefulWidget {
   TelaPesquisaProduto({Key key}) : super(key: key);
@@ -73,17 +74,80 @@ class _TelaPesquisaProdutoState extends State<TelaPesquisaProduto> {
   }
 
   Widget _linhaListaZebrada(Produto produto, int indice) {
-    return Container(
-        decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey, width: 0.8),
-            color: indice % 2 == 0 ? Colors.grey.shade300 : Colors.white),
-        child: ListTile(
-            title: new Text(produto.nome,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
-                    fontWeight: FontWeight.normal),
-                textAlign: TextAlign.left)));
+    return Slidable(
+        actionPane: SlidableDrawerActionPane(),
+        actionExtentRatio: 0.15,
+        child: Container(
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey, width: 0.8),
+                color: indice % 2 == 0 ? Colors.grey.shade300 : Colors.white),
+            child: ListTile(
+                title: new Text(produto.nome,
+                    style:
+                        TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.normal),
+                    textAlign: TextAlign.left))),
+        secondaryActions: <Widget>[
+          new IconSlideAction(
+            caption: 'Editar',
+            color: Colors.green,
+            icon: Icons.edit,
+            onTap: () {
+              //Tratamento botão editar
+
+              //Carregar aqui o produto completo do banco quando necessário.
+
+              Function onFinishedInsert = () {
+                setState(() {
+                  _controle.atualizarPesquisa();
+                });
+              };
+
+              _controle.produtoEmEdicao = produto;
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => TelaCadastroProduto(this._controle, onFinishedInsert)),
+              );
+            },
+          ),
+          new IconSlideAction(
+            caption: 'Deletar',
+            color: Colors.red,
+            icon: Icons.delete,
+            onTap: () => setState(() {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext builder) {
+                    return new AlertDialog(
+                      title: new Text("Confirmação"),
+                      content: new Text("Deseja realmente excluir este registro?"),
+                      actions: <Widget>[
+                        new TextButton(
+                            onPressed: () {
+                              setState(() {
+                                //Tratamento botão excluir
+                                _controle.produtoEmEdicao = produto;
+                                _controle.produtoEmEdicao.ativo = false;
+                                _controle.gravarProdutoEmEdicao();
+                                setState(() {
+                                  _controle.produtosPesquisados.removeAt(indice);
+                                });
+                              });
+
+                              Navigator.of(context).pop();
+                            },
+                            child: new Text("Sim")),
+                        new TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: new Text("Não")),
+                      ],
+                    );
+                  });
+            }),
+          ),
+        ]);
   }
 
   @override
@@ -94,10 +158,17 @@ class _TelaPesquisaProdutoState extends State<TelaPesquisaProduto> {
           child: Icon(Icons.add),
           onPressed: () {
             _controle.produtoEmEdicao = Produto();
+
+            Function onFinishedInsert = () {
+              setState(() {
+                _controle.atualizarPesquisa();
+              });
+            };
+
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => TelaCadastroProduto(this._controle)),
+                  builder: (context) => TelaCadastroProduto(this._controle, onFinishedInsert)),
             );
           },
         ),
@@ -117,8 +188,7 @@ class _TelaPesquisaProdutoState extends State<TelaPesquisaProduto> {
               return ListView.builder(
                 itemCount: _controle.produtosPesquisados.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return _linhaListaZebrada(
-                      _controle.produtosPesquisados[index], index);
+                  return _linhaListaZebrada(_controle.produtosPesquisados[index], index);
                 },
               );
             }));

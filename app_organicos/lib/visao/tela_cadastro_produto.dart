@@ -5,24 +5,29 @@ import 'package:flutter/material.dart';
 
 class TelaCadastroProduto extends StatefulWidget {
   ControleProduto _controle;
+  Function _onFinishedInsert;
 
-  TelaCadastroProduto(this._controle);
+  TelaCadastroProduto(this._controle, this._onFinishedInsert);
 
   @override
-  _TelaCadastroProdutoState createState() => _TelaCadastroProdutoState(this._controle);
+  _TelaCadastroProdutoState createState() =>
+      _TelaCadastroProdutoState(this._controle, this._onFinishedInsert);
 }
 
 class _TelaCadastroProdutoState extends State<TelaCadastroProduto> {
   ControleProduto _controle;
+  Function _onFinishedInsert;
+
   ControleTipoProduto _controleTipoProduto = ControleTipoProduto();
   var _chaveFormulario = GlobalKey<FormState>();
 
-  _TelaCadastroProdutoState(this._controle);
+  _TelaCadastroProdutoState(this._controle, this._onFinishedInsert);
 
   void _acaoBotaoSalvar(BuildContext context) {
     if (_chaveFormulario.currentState != null && _chaveFormulario.currentState.validate()) {
       _chaveFormulario.currentState.save();
       _controle.gravarProdutoEmEdicao().then((value) {
+        if (_onFinishedInsert != null) _onFinishedInsert();
         Navigator.of(context).pop();
       });
     }

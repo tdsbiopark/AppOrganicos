@@ -6,12 +6,10 @@ class Conexao {
   static Future<PostgreSQLConnection> getConexao() async {
     if (_conexaoPostgreSQL == null || _conexaoPostgreSQL.isClosed) {
       _conexaoPostgreSQL = new PostgreSQLConnection(
-          "192.168.0.103", 5432, "dbOrganicosApp",
+          "192.168.0.120", 5432, "dbOrganicosApp",
           username: "postgres", password: "12345678");
       await _conexaoPostgreSQL.open();
-      //await _conexaoPostgreSQL.open().timeout(Duration(seconds: 30));
     }
-
     return _conexaoPostgreSQL;
   }
 }

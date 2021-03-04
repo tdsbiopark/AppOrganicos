@@ -36,11 +36,11 @@ class ProdutoDAO {
 
   Future<List<Produto>> pesquisar(String filtro) async {
     PostgreSQLConnection conexao = await Conexao.getConexao();
-    List<Produto> produtos = List();
+    List<Produto> produtos = List.empty(growable: true);
 
     List<Map<String, Map<String, dynamic>>> results = await conexao.mappedResultsQuery(
         """SELECT id, tipoproduto_id, nome, descricao, cast(preco_unitario as float) as preco,
-        unidade, registro_ativo  from produto where lower(nome) like @filtro limit 50""",
+        unidade, registro_ativo  from produto where registro_ativo and lower(nome) like @filtro limit 50""",
         substitutionValues: {"filtro": "%" + filtro.toLowerCase() + "%"});
 
     for (final row in results) {
@@ -49,7 +49,7 @@ class ProdutoDAO {
       produto.tipo = TipoProduto()..id = row["produto"]["tipoproduto_id"];
       produto.nome = row["produto"]["nome"];
       produto.descricao = row["produto"]["descricao"];
-      produto.preco = row["produto"]["preco"];
+      produto.preco = row[null]["preco"];
       produto.unidade = row["produto"]["unidade"];
       produto.ativo = row["produto"]["registro_ativo"];
 
