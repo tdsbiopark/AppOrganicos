@@ -5,7 +5,7 @@ import 'conexao.dart';
 class TipoProdutoDAO {
   Future<List<TipoProduto>> listar() async {
     PostgreSQLConnection conexao = await Conexao.getConexao();
-    List<TipoProduto> objetos = List();
+    List<TipoProduto> objetos = List.empty(growable: true);
 
     List<Map<String, Map<String, dynamic>>> results = await conexao.mappedResultsQuery(
         "SELECT * from tipoproduto where registro_ativo order by lower(nome)",

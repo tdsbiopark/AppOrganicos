@@ -1,4 +1,3 @@
-import 'package:app_organicos/dao/conexao.dart';
 import 'package:app_organicos/visao/tela_pesquisa_produto.dart';
 import 'package:flutter/material.dart';
 
