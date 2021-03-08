@@ -4,9 +4,10 @@ import 'package:app_organicos/modelo/tipo_produto.dart';
 import 'package:flutter/material.dart';
 
 class TelaCadastroProduto extends StatefulWidget {
+  //Controle do produto:
   ControleProduto _controle;
   Function _onFinishedInsert;
-
+  //construtor da tela
   TelaCadastroProduto(this._controle, this._onFinishedInsert);
 
   @override
@@ -14,20 +15,33 @@ class TelaCadastroProduto extends StatefulWidget {
       _TelaCadastroProdutoState(this._controle, this._onFinishedInsert);
 }
 
+//Classe privada, define a estrutura da tela:
 class _TelaCadastroProdutoState extends State<TelaCadastroProduto> {
+  //Instancia o controlador:
   ControleProduto _controle;
+  ControleTipoProduto _controleTipoProduto = ControleTipoProduto();
+  //funcao:
   Function _onFinishedInsert;
 
-  ControleTipoProduto _controleTipoProduto = ControleTipoProduto();
+  //Refencia um widge , referencia , identifica, ponteiro para os widget
   var _chaveFormulario = GlobalKey<FormState>();
-
+  //Construtor
   _TelaCadastroProdutoState(this._controle, this._onFinishedInsert);
 
+  //Metodo para o toão salvar:
   void _acaoBotaoSalvar(BuildContext context) {
-    if (_chaveFormulario.currentState != null && _chaveFormulario.currentState.validate()) {
+    //Valisa se o formulario esta ativo, se algum validador retornou algo
+    if (_chaveFormulario.currentState != null &&
+        //chama o validade de cada campo
+        _chaveFormulario.currentState.validate()) {
+      //Sava chama o metodo e passa os campos para o objeto
       _chaveFormulario.currentState.save();
+      //valva o produto em edição: apos terminar de gravar then ....
+      //faça o fechamento da tela
       _controle.gravarProdutoEmEdicao().then((value) {
+        //
         if (_onFinishedInsert != null) _onFinishedInsert();
+        //Pop - tira a tela da pilha
         Navigator.of(context).pop();
       });
     }
@@ -35,46 +49,68 @@ class _TelaCadastroProdutoState extends State<TelaCadastroProduto> {
 
   @override
   Widget build(BuildContext context) {
+    //Containner base da tela:
     return Scaffold(
         appBar: AppBar(
           title: Center(child: Text("Cadastro de Produtos")),
         ),
+        //Botão salvar
         floatingActionButton: FloatingActionButton(
+          //Icone Salvar
           child: Icon(Icons.check),
+          //Evento:
           onPressed: () {
+            //metodo ação de salvar
             _acaoBotaoSalvar(context);
           },
         ),
+        //Definir o corpo do formulario Reforna o form com os campos
         body: Padding(
             padding: EdgeInsets.all(15),
             child: Form(
+              //referncia:
               key: _chaveFormulario,
+              //A lista vice é melhot que a Collumn, pos permite rolar a tela
+              //o Formne cabe na tela,Não estoura a tela
               child: ListView(
                 children: <Widget>[
+                  //Campo Nome
                   TextFormField(
                       decoration: const InputDecoration(
-                          border: OutlineInputBorder(borderSide: BorderSide(color: Colors.teal)),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.teal)),
+                          //fundo
                           filled: true,
-                          // prefixIcon: Icon(Icons.person),
+                          //icone antes do texto
+                          //prefixIcon: Icon(Icons.person),
+                          //texto dentro do campo:
                           hintText: "Nome",
+                          //Texto sobre o campo:
                           labelText: "Nome"),
+                      //Tipo de dado que o campo aceita: Definir o tipo do teclado
                       keyboardType: TextInputType.text,
+                      //valor inicial co sontrle
                       initialValue: _controle.produtoEmEdicao.nome,
+                      //depois de valvo, coloca o valor no objeto
                       onSaved: (String value) {
                         _controle.produtoEmEdicao.nome = value;
                       },
+                      //validador do campo - retorna um string caso nao passe
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Informe o nome do produto!";
                         }
                         return null;
                       }),
+                  //Separador
                   SizedBox(
                     height: 10,
                   ),
+                  //Campo Descreição:
                   TextFormField(
                       decoration: const InputDecoration(
-                          border: OutlineInputBorder(borderSide: BorderSide(color: Colors.teal)),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.teal)),
                           filled: true,
                           // prefixIcon: Icon(Icons.person),
                           hintText: "Descrição",
@@ -90,43 +126,60 @@ class _TelaCadastroProdutoState extends State<TelaCadastroProduto> {
                         }
                         return null;
                       }),
+                  //Separador
                   SizedBox(
                     height: 10,
                   ),
+                  //Combobox
                   FutureBuilder(
                       future: _controleTipoProduto.listar(),
-                      builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+                      builder:
+                          (BuildContext context, AsyncSnapshot<List> snapshot) {
                         String labelCampo = "Tipo Produto";
+                        //Se nao tem dados...
                         if (!snapshot.hasData) {
                           labelCampo = "Carregando Lista de Dados...";
                         }
+                        //recebe a lista vinda do banco: lista vazi ou lista cheia
                         List<TipoProduto> listaTipos =
                             snapshot.data == null ? List() : snapshot.data;
-
+                        //
                         return DropdownButtonFormField(
                           decoration: InputDecoration(
-                              border:
-                                  OutlineInputBorder(borderSide: BorderSide(color: Colors.teal)),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.teal)),
                               filled: true,
                               isDense: true,
                               prefixIcon: Icon(Icons.assignment_ind),
                               hintText: labelCampo,
                               labelText: labelCampo),
                           isExpanded: true,
+                          //lista de objetos:
                           items: listaTipos
+                              //mapeia a lista de objetos semelhante ao foreach
                               .map<DropdownMenuItem<TipoProduto>>(
-                                  (TipoProduto tipo) => DropdownMenuItem<TipoProduto>(
+                                  (TipoProduto tipo) =>
+                                      DropdownMenuItem<TipoProduto>(
                                         value: tipo,
-                                        child: Text(tipo.nome, textAlign: TextAlign.left),
+                                        //texto que vai aparcer
+                                        child: Text(tipo.nome,
+                                            textAlign: TextAlign.left),
                                       ))
+                              //ja lista
                               .toList(),
+
+                          //recebe o objeto
                           value: _controle.produtoEmEdicao.tipo,
+
+                          //validação do campo:
                           validator: (value) {
                             if (value == null) {
                               return "Informe o tipo do produto!";
                             }
                             return null;
                           },
+
+                          //ao seleciona ja refelete no objeto
                           onChanged: (TipoProduto value) {
                             setState(() {
                               _controle.produtoEmEdicao.tipo = value;
@@ -134,23 +187,32 @@ class _TelaCadastroProdutoState extends State<TelaCadastroProduto> {
                           },
                         );
                       }),
+                  //Separador
                   SizedBox(
                     height: 10,
                   ),
+                  //Campo preço
                   TextFormField(
                       decoration: const InputDecoration(
-                          border: OutlineInputBorder(borderSide: BorderSide(color: Colors.teal)),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.teal)),
                           filled: true,
                           // prefixIcon: Icon(Icons.person),
                           hintText: "Preço Unitário",
                           labelText: "Preço Unitario"),
-                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+                      //Tipo de dado que aceita:
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
+                      //valida se o valor for null, deixa vazio:
                       initialValue: _controle.produtoEmEdicao.preco == null
                           ? ""
                           : _controle.produtoEmEdicao.preco.toString(),
                       onSaved: (String value) {
-                        _controle.produtoEmEdicao.preco = double.tryParse(value);
+                        _controle.produtoEmEdicao.preco =
+                            //tenta converter...
+                            double.tryParse(value);
                       },
+                      //Validação do campo:
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Informe o preço do produto!";
@@ -162,7 +224,8 @@ class _TelaCadastroProdutoState extends State<TelaCadastroProduto> {
                   ),
                   TextFormField(
                       decoration: const InputDecoration(
-                          border: OutlineInputBorder(borderSide: BorderSide(color: Colors.teal)),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.teal)),
                           filled: true,
                           // prefixIcon: Icon(Icons.person),
                           hintText: "Unidade",
