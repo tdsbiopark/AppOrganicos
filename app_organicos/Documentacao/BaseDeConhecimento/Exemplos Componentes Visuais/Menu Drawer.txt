@@ -1,0 +1,73 @@
+Drawer(
+            child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                padding: EdgeInsets.zero,
+                margin: EdgeInsets.zero,
+                child: Image.asset("caminho_imagem"),
+                decoration: BoxDecoration(color: Colors.blueGrey.shade700),
+              ),
+			  
+              Container(
+                  color: Colors.blueGrey[900],
+                  child: ListTile(
+                      title: new Text("TITULO 1",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.normal),
+                          textAlign: TextAlign.center))),
+						  
+              Container(
+                  color: Colors.blueGrey[700],
+                  child: ListTile(
+				          onTap: () {
+						     Navigator.of(context).pop();//Fecha o menu
+						     //evento de clique
+				          },
+                          title: new Text("ITEM 1 T1",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.normal),
+                          textAlign: TextAlign.center))),
+						  
+              Container(
+                  color: Colors.blueGrey[700],
+                  child: ListTile(
+                      title: new Text("ITEM 2 T1",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.normal),
+                          textAlign: TextAlign.center))),            
+              Container(
+                  color: Colors.blueGrey[900],
+                  child: ListTile(
+                      title: new Text("TITULO 2",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.normal),
+                          textAlign: TextAlign.center))),
+						  
+              Container(
+                  color: Colors.blueGrey[700],
+                  child: ListTile(
+                      title: new Text("ITEM 1 T2",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.normal
+                              ),
+                          textAlign: TextAlign.center)))                          
+            ],
+          ),
+)
+
+
+
+Bibliotecas alternativas e não nativas de menus drawer:
+https://pub.dev/packages/kf_drawer#-example-tab-
+

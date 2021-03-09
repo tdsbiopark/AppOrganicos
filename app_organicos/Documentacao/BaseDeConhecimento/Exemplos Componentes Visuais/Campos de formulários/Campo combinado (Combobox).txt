@@ -1,0 +1,69 @@
+  DropdownButtonFormField(
+                     decoration: InputDecoration(
+                          labelStyle: algumTextStyle,
+                          errorStyle: algumTextStyle,
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.teal)),
+                          filled: true,
+                          isDense: true,
+                          // prefixIcon: Icon(Icons.person),
+                          hintText: "Titulo Campo",
+                          labelText: "Titulo Campo"),
+                          isExpanded: true,
+                    items: _controle.minhaListaObjetos
+                        .map<DropdownMenuItem<Objeto>>(
+                            (Objeto o) => DropdownMenuItem<Objeto>(
+                                  value: o,
+                                  child: Text(o.meuCampoString,
+                                      style: algumTextStyle,
+                                      textAlign: TextAlign.center),
+                                ))
+                        .toList(),
+                        value: meuCampoObjeto,
+                    onChanged: (Objeto value) {
+                      setState(() {
+                        meuCampoObjeto = value;
+                      });
+                    },
+)
+
+//////////////////////////////// COMBOBOX COM CARREGAMENTO ASÍNCRONO ///////////////////////////////////////////
+FutureBuilder(
+                    future: minhaListaFutura,
+                    builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+                      String labelCampo = "Meu Label";
+                      if (!snapshot.hasData) {
+                        labelCampo = "Carregando Lista de Dados..."
+                      }
+                      minhaLista = snapshot.data == null ? List() : snapshot.data;
+
+                      return DropdownButtonFormField(
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(borderSide: BorderSide(color: Colors.teal)),
+                            filled: true,
+                            isDense: true,
+                            prefixIcon: Icon(Icons.assignment_ind),
+                            hintText: labelCampo,
+                            labelText: labelCampo),
+                        isExpanded: true,
+                        items: minhaLista 
+                            .map<DropdownMenuItem<MeuTipoDeObjetoDaLista>>(
+                                (MeuTipoDeObjetoDaLista o) => DropdownMenuItem<MeuTipoDeObjetoDaLista>(
+                                      value: o,
+                                      child: Text(meuObjeto.meuCampo, textAlign: TextAlign.center),
+                                    ))
+                            .toList(),
+                        value: valorPadrao,
+                        validator: (value) {
+                          if (value == null) {
+                            return "Campo Obrigatório!";
+                          }
+                          return null;
+                        },
+                        onChanged: (MeuTipoDeObjetoDaLista value) {
+                          setState(() {
+                            meuObjeto.meuCampo = value;
+                          });
+                        },
+                      );
+                    });

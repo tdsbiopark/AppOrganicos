@@ -1,0 +1,63 @@
+Adicionar flutter_localizations em pubspec.yaml
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  flutter_localizations:
+    sdk: flutter
+
+--------------------------------------------------------------------------------------------  
+Adicionar as linguagens suportadas dentro de MaterialAPP. Caso o celular possua uma linguagem não suportada, o comando Localizations.localeOf(context) retornará a linguagem Inglesa
+
+localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate
+        ],
+        supportedLocales: [
+          const Locale('pt', 'BR'),
+          const Locale('en', 'US'),
+        ],  
+
+-------------------------------------------------------------------------------------------		
+Criar uma classe com um Singleton que guarda o locale e um Map contendo as String do app:
+
+class Localizacao {
+
+  Locale locale = Locale.fromSubtags(countryCode: "US", languageCode: "en");
+
+  static Localizacao _instance;
+  factory Localizacao() {
+    _instance ??= Localizacao._internalConstructor();
+    return _instance;
+  }
+  Localizacao._internalConstructor();
+
+  Map<String, Map<String, String>> _localizedValues = {
+    'en': {
+      'app_name': 'TESTE',
+      'institucional': 'INSTITUTIONAL',
+    },
+    //-----------------------------------------------------------------
+    'pt': {
+	  'app_name': 'TESTE',
+      'institucional': 'INSTITUCIONAL'
+    },
+  };
+
+  String getString(String stringName) {
+    String value = _localizedValues[locale.languageCode][stringName];
+    return value != null ? value : stringName;
+  }
+  
+}
+
+--------------------------------------------------------------------------------------------
+Na primeira tela da aplicação criar a primeira instancia do Singleton e setar a localização:
+
+@override
+Widget build(BuildContext context) {
+    Locale _locale = Localizations.localeOf(context);
+    Localizacao().locale = _locale;
+	...
+}

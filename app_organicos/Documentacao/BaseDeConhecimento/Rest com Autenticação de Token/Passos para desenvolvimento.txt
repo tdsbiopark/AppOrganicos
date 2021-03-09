@@ -1,0 +1,124 @@
+Ativar o aqueduct digitando a seguinte linha de comando no CMD:
+pub global activate aqueduct
+
+Criar um novo projeto Web com aqueduct digitando a seguinte linha de comando no CMD estando na pasta onde se deseja criar o projeto:
+aqueduct create nome_projeto
+
+Abra o projeto pelo Visual Studio Code pela opção Open Folder
+
+Crie na raiz do projeto um arquivo chamado database.yaml onde serão gravados os parâmetros de configuração de conexão com o BD (Postgres)
+
+Cole as seguintes chaves dentro do arquivo database.yaml e configure os valores de acordo com o seu banco de dados:
+username: "postgres"
+password: "postgres"
+host: "localhost"
+port: 5432
+databaseName: "aqueduct_auth"
+
+Crie um pacote modelo em um pacote controle dentro da pasta lib
+
+Crie um arquivo chamado api_user.dart dentro do pacote modelo e cole o seguinte código nele: (Reposnsável por mapear a tabela de usuários do banco no ORM do Aqueduct)
+
+		import 'package:aqueduct/managed_auth.dart';
+		import '../nome_projeto.dart';
+
+		class APIUser extends ManagedObject<_APIUser> implements _APIUser, ManagedAuthResourceOwner<_APIUser> {
+		  @Serialize(input: true, output: false)
+		  String password;
+		}
+		class _APIUser extends ResourceOwnerTableDefinition {}
+
+Crie um arquivo chamado register_controller.dart dentro do pacote controle e adicione o seguinte código: (Reponsavel por cadastrar os usuários da api pela primeira vez)
+
+		import 'dart:async';
+		import 'package:aqueduct/aqueduct.dart';
+		import 'package:nome_projeto/modelo/api_user.dart';
+
+		class RegisterController extends ResourceController {
+		  RegisterController(this.context, this.authServer);
+		  final ManagedContext context;
+		  final AuthServer authServer;
+
+		  @Operation.post()
+		  Future<Response> createUser(@Bind.body() APIUser user) async {
+			if (user.username == null || user.password == null) {
+			  return Response.badRequest(
+				body: {"error": "Necessario informar o usuario e a senha."});
+			}
+
+			user
+			  ..salt = AuthUtility.generateRandomSalt()
+			  ..hashedPassword = authServer.hashPassword(user.password, user.salt);
+
+			return Response.ok(await Query(context, values: user).insert());
+		  }
+		}
+		
+Abra o arquivo channel.dart e realize as seguintes alterações:
+    Adicione os seguintes imports:
+	    import 'package:aqueduct/managed_auth.dart';
+		import 'modelo/api_user.dart';
+		import 'package:nome_projeto/controle/register_controller.dart';
+    
+	Crie as seguintes variáveis locais na classe em channel.dart
+	    ManagedContext context;
+        AuthServer authServer;
+		
+	Adicione o seguinte código dentro do método prepare:
+        final config = DatabaseConfiguration.fromFile(File("database.yaml"));
+        final dataModel = ManagedDataModel.fromCurrentMirrorSystem();
+        final persistentStore = PostgreSQLPersistentStore.fromConnectionInfo(config.username, config.password, config.host, config.port, config.databaseName);
+        context = ManagedContext(dataModel, persistentStore);
+        final authStorage = ManagedAuthDelegate<APIUser>(context);
+        authServer = AuthServer(authStorage);	
+    
+	No método entryPoint adicione as seguintes rotas:
+	   
+        router.route('/register').link(() => RegisterController(context, authServer)); //Para cadastrar novos usuários
+        router.route('/auth/token').link(() => AuthController(authServer)); //Para gerar um token novo
+
+    Todos os demais métodos (rotas) devem ser protegidas adicionando .link(() => Authorizer.bearer(authServer)) a elas. Exemplo:
+	    router.route("/example").link(() => Authorizer.bearer(authServer)).linkFunction((request) async {
+           return Response.ok({"key": "value"});
+        });
+    
+	Agora é hora de gerar as tabelas do banco. Para isso digite os seguintes comandos no CMD: (De dentro da pasta do projeto. Suporta apenas postgres 9.6 para cima)
+		aqueduct db generate
+		aqueduct db upgrade
+		
+	Rode o projeto no Visual Studio Code com a tecla F5 e é hora de inserir as credenciais do usuário no banco de dados. Para tanto use o seguinte comando no CMD: (o site https://www.browserling.com/tools/random-hex pode ser usado para gerar usuários e senhas aleatórias)
+        curl -X POST http://localhost:8888/register -H "Content-Type: application/json" -d "{\"username\":\"d0a4dd86652cd417b057\", \"password\":\"f0cab4aacc0d49da5\"}"
+	
+    Rode também o seguinte comando para inserir as credenciais do software cliente:
+	    aqueduct auth add-client --id id_da_api_escolhido --secret frase_segredo_da_api_escolhida --connect postgres://usuario_bd:senha_bd@localhost:5432/nome_bd
+	
+///////////////////Programação do Cliente///////////////////////////////////
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart' as http; //Incluir http: any em pubspec.yaml
+
+Future<void> main() async {
+  const usuario = "usuario_da_api";
+  const senha = "senha_usuario_api";
+
+  const clientID = "id_cliente_da_api";
+  const clientSecret = "frase_segredo_cliente_da_api";
+  const body = "username=" + usuario + "&password=" + senha + "&grant_type=password";
+  final String clientCredentials = const Base64Encoder().convert("$clientID:$clientSecret".codeUnits);
+
+  http.Response response = await http.post("http://localhost:8888/auth/token", headers: {"Content-Type": "application/x-www-form-urlencoded", "Authorization": "Basic $clientCredentials"}, body: body);
+
+  String token = json.decode(response.body)["access_token"];
+
+  print("Token: " + token);
+
+  response = await http.post("http://localhost:8888/example",
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: "");
+  print(response.body);
+}

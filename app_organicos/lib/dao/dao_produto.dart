@@ -48,7 +48,7 @@ class ProdutoDAO {
   Future<List<Produto>> pesquisar(String filtro) async {
     //Definir a conexão:
     PostgreSQLConnection conexao = await Conexao.getConexao();
-    //retorna uma lista:
+    //retorna uma lista: Flutter 2.0 - Cria a lista fazia
     List<Produto> produtos = List.empty(growable: true);
     //Faz a consulta
     List<
@@ -67,6 +67,7 @@ class ProdutoDAO {
       produto.tipo = TipoProduto()..id = row["produto"]["tipoproduto_id"];
       produto.nome = row["produto"]["nome"];
       produto.descricao = row["produto"]["descricao"];
+      //devido ao cast prde a key de tabela, por isso usa a chave null
       produto.preco = row[null]["preco"];
       produto.unidade = row["produto"]["unidade"];
       produto.ativo = row["produto"]["registro_ativo"];

@@ -99,10 +99,13 @@ class _TelaPesquisaProdutoState extends State<TelaPesquisaProduto> {
     });
   }
 
-  //Metoto para Formatar a lista: Cada produto é uma linha
+  //Metoto para Formatar a lista: a cada linha recebe um poduto
   Widget _linhaListaZebrada(Produto produto, int indice) {
+    //Componente que desliza a linha - import - adicionado a componente - aula: 03/03
     return Slidable(
+        //
         actionPane: SlidableDrawerActionPane(),
+        //percentual de deslise
         actionExtentRatio: 0.15,
         //containner , como se fosse uma painel - nesse containner pode por qualque coisa
         //cada linha sera um objeto, pode por comportamentos diferentes para cada linha
@@ -127,11 +130,14 @@ class _TelaPesquisaProdutoState extends State<TelaPesquisaProduto> {
                         fontSize: 10,
                         fontWeight: FontWeight.normal),
                     textAlign: TextAlign.left))),
+        //lista de widgets - adicionado botoes
         secondaryActions: <Widget>[
+          //Btão Editar:
           new IconSlideAction(
             caption: 'Editar',
             color: Colors.green,
             icon: Icons.edit,
+            //Evento ao arrastar
             onTap: () {
               //Tratamento botão editar
               //Carregar aqui o produto completo do banco quando necessário.
@@ -142,45 +148,62 @@ class _TelaPesquisaProdutoState extends State<TelaPesquisaProduto> {
               };
               //carrega a tela com om objeto vazio, campos limpos
               _controle.produtoEmEdicao = produto;
-              //Carrega a tela de cadastro para cadastrar novo produto
+              //Adiciona a nova tela na pilha, Carrega a tela de cadastro para cadastrar novo produto
               Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
+                        //Instancia o formulario do produto: mais o metodos onFinishedInsert
                         TelaCadastroProduto(this._controle, onFinishedInsert)),
               );
             },
           ),
+          //Criando botão deletar:
           new IconSlideAction(
             caption: 'Deletar',
             color: Colors.red,
             icon: Icons.delete,
+            //ao clicar...
             onTap: () => setState(() {
+              //chama uma caixa de mensagem
               showDialog(
                   context: context,
                   builder: (BuildContext builder) {
+                    //Definir o tipo da caixa de diaglo de alerta
                     return new AlertDialog(
                       title: new Text("Confirmação"),
+                      //Conteudo da caixa de mensagem
                       content:
                           new Text("Deseja realmente excluir este registro?"),
+                      //lista de botões com as ações
                       actions: <Widget>[
+                        //Botao:
                         new TextButton(
+                            //Evento
                             onPressed: () {
+                              //estado:
                               setState(() {
                                 //Tratamento botão excluir
+                                //Ação ao clicar no botão Editar, passa o produto da linha para
+                                //produto em edução:
                                 _controle.produtoEmEdicao = produto;
+                                //quando exclui apenas desativa
                                 _controle.produtoEmEdicao.ativo = false;
                                 _controle.gravarProdutoEmEdicao();
+                                //Atualiza a lista na tela
                                 setState(() {
+                                  //Pega a lista, e remove o item pelo indice
                                   _controle.produtosPesquisados
                                       .removeAt(indice);
                                 });
                               });
-
+                              //Auto fecha a caixa de mensagem:
                               Navigator.of(context).pop();
                             },
+                            //Testo do botão Sim
                             child: new Text("Sim")),
                         new TextButton(
+                            //Evento do botão não:
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
@@ -210,8 +233,11 @@ class _TelaPesquisaProdutoState extends State<TelaPesquisaProduto> {
             //Recebe o produto sendo editado
             _controle.produtoEmEdicao = Produto();
 
+            //Função responsavel por avisar a outra tele - depois te terminar de inserir
             Function onFinishedInsert = () {
+              //Atualiza algo na tela
               setState(() {
+                //atualiza a lista
                 _controle.atualizarPesquisa();
               });
             };
@@ -223,7 +249,7 @@ class _TelaPesquisaProdutoState extends State<TelaPesquisaProduto> {
               //Retorna o objeto da nova tela
               MaterialPageRoute(
                   builder: (context) =>
-                      //Chama a tela de cadastro:
+                      //Chama a tela de cadastro: Recebe um controle e uma metodo por parametro
                       TelaCadastroProduto(this._controle, onFinishedInsert)),
             );
           },

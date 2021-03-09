@@ -1,0 +1,21 @@
+Este problema está relacionado a biblioteca libusbmuxd. Para corrigir basta reinstalar as bibliotecas responsáveis pelo canal de depuração de aparelhos físicos, usando os seguintes comandos: (Precisa reiniciar o computador ao final)
+
+brew uninstall ideviceinstaller
+brew uninstall libimobiledevice
+brew uninstall ios-deploy
+brew uninstall usbmuxd
+
+//Versões estáveis
+brew update
+brew install usbmuxd
+brew link usbmuxd
+brew install libimobiledevice
+brew install ideviceinstaller ios-deploy
+
+//Ultima versão DEV
+brew update
+brew install --HEAD usbmuxd
+brew link usbmuxd
+brew install --HEAD libimobiledevice
+brew install --HEAD ideviceinstaller 
+brew install --HEAD ios-deploy

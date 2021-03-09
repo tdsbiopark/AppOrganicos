@@ -1,0 +1,31 @@
+incluir as declarações no arquivo pubspec.yaml abaixo de:
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+
+
+-------------------------------- Bibiotecas úteis ---------------------------
+  flutter_slidable: "^0.4.9" //Biblioteca para criar swipes em ListViews
+  
+  sqflite: "^1.1.0" //Biblioteca para manipular bancos de dados SQLite
+  
+  postgres: ^2.1.0 //Biblioteca para manipular bancos de dados PostgreSQL (https://pub.dev/packages/postgres#-readme-tab-)
+  
+  mysql1: ^0.17.1 //Biblioteca para manipular bancos de dados MySQL (https://pub.dev/packages/mysql1#-readme-tab-)
+  Comandos para liberar acesso externo:
+    CREATE USER 'root'@'%' IDENTIFIED BY 'mysql';
+    GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
+  Comando para mudar método de autenticação do MySql 8:
+    ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'mysql';
+    flush privileges;	
+  Obs: Ao instalar o mysql, ao invés de escolher strong password, escolha a opção legacy.
+  https://stackoverflow.com/questions/49194719/authentication-plugin-caching-sha2-password-cannot-be-loaded/50737698#50737698
+  
+  cloud_firestore: ^0.13.0+1 //Biblioteca para manipular bancos de dados Firebase (https://pub.dev/packages/cloud_firestore#-installing-tab-)
+  
+  mask_text_input_formatter: ^1.0.5 //Biblioteca com classes para inputFormatter de TextFields (https://pub.dev/packages/mask_text_input_formatter#-readme-tab-)
+  
+  
+  
+  

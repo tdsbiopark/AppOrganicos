@@ -1,0 +1,16 @@
+showDialog(
+          context: context,
+          builder: (BuildContext builder) {
+            return new AlertDialog(
+              title: new Text("Título da mensagem aqui"),
+              content: new Text("Mensagem aqui"),
+              actions: <Widget>[
+                new FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      //Ação de clique
+                    },
+                    child: new Text("OK"))
+              ],
+            );
+          });

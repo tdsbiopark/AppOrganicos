@@ -6,26 +6,33 @@ import 'package:flutter/material.dart';
 class TelaCadastroProduto extends StatefulWidget {
   //Controle do produto:
   ControleProduto _controle;
+
+  //Recebe uma função por parametro, é executa apos terminar o processo de insert
   Function _onFinishedInsert;
+
   //construtor da tela
   TelaCadastroProduto(this._controle, this._onFinishedInsert);
 
   @override
   _TelaCadastroProdutoState createState() =>
+      //construtor da tela, recebe um controle e uma função
       _TelaCadastroProdutoState(this._controle, this._onFinishedInsert);
 }
 
-//Classe privada, define a estrutura da tela:
+//Classe de estado, define a estrutura e o estado da tela:
 class _TelaCadastroProdutoState extends State<TelaCadastroProduto> {
   //Instancia o controlador:
   ControleProduto _controle;
+
+  //Instancia o controle do tipo produto:
   ControleTipoProduto _controleTipoProduto = ControleTipoProduto();
-  //funcao:
+
+  //funcao:é executa apos terminar o processo de insert
   Function _onFinishedInsert;
 
   //Refencia um widge , referencia , identifica, ponteiro para os widget
   var _chaveFormulario = GlobalKey<FormState>();
-  //Construtor
+  //Construtor de estados da tela, recebe um controle e a função é executa apos terminar
   _TelaCadastroProdutoState(this._controle, this._onFinishedInsert);
 
   //Metodo para o toão salvar:
@@ -39,7 +46,7 @@ class _TelaCadastroProdutoState extends State<TelaCadastroProduto> {
       //valva o produto em edição: apos terminar de gravar then ....
       //faça o fechamento da tela
       _controle.gravarProdutoEmEdicao().then((value) {
-        //
+        //e o metodo for diferente de null executa o metodo
         if (_onFinishedInsert != null) _onFinishedInsert();
         //Pop - tira a tela da pilha
         Navigator.of(context).pop();
@@ -227,7 +234,7 @@ class _TelaCadastroProdutoState extends State<TelaCadastroProduto> {
                           border: OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.teal)),
                           filled: true,
-                          // prefixIcon: Icon(Icons.person),
+                          // prefixIcon: Icon(Icons.ac_unit),
                           hintText: "Unidade",
                           labelText: "Unidade"),
                       keyboardType: TextInputType.text,
@@ -235,12 +242,15 @@ class _TelaCadastroProdutoState extends State<TelaCadastroProduto> {
                       onSaved: (String value) {
                         _controle.produtoEmEdicao.unidade = value;
                       },
+
+                      //Validador:
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Informe a unidade do produto!";
                         }
                         return null;
                       }),
+                  //Separador:
                   SizedBox(
                     height: 10,
                   ),

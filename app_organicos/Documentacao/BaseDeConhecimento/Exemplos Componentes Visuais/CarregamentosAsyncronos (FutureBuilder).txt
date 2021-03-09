@@ -1,0 +1,10 @@
+FutureBuilder(future: minhaListaFutura,
+              builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+                  if (!snapshot.hasData || snapshot.data.length == 0) {
+                       return //aqui vai o Widget carregando;  
+                  } else {
+                       return //aqui vai o Widget carregado;   
+                  }                     
+
+              }
+);

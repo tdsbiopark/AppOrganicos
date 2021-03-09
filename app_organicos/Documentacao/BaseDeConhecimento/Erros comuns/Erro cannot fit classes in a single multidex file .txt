@@ -1,0 +1,3 @@
+Adicionar a seguinte linha em Android/app/build.gradle sessão defaultConfig {}
+
+multiDexEnabled true
