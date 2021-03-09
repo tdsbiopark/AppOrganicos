@@ -1,5 +1,8 @@
 import 'dart:js';
 
+import 'package:app_organicos/modelo/certificadora.dart';
+import 'package:app_organicos/modelo/cidade.dart';
+import 'package:app_organicos/modelo/grupo.dart';
 import 'package:app_organicos/modelo/produtor.dart';
 
 import 'conexao.dart';
@@ -104,4 +107,74 @@ class ProdutorDao {
     });
   }
 
+//Metodo pesquisar:
+  Future<List<Produtor>> pesquisar(String filtro) async {
+    //Definir a conexão:
+    PostgreSQLConnection conexao = await Conexao.getConexao();
+    //Instancia a lista vazia:
+    List<Produtor> produtores = List.empty(growable: true);
+
+    //Faz a consulta
+    List<Map<String, Map<String, dynamic>>> results =
+        await conexao.mappedResultsQuery("""
+              SELECT 
+              id, 
+              certificadora_id, 
+              grupo_id, 
+              nome, 
+              nome_propriedade, 
+              cpf_cnpj, 
+              endereco, 
+              numero, 
+              bairro, 
+              cidade_id, 
+              telefone, 
+              latitude, 
+              longitude, 
+              certificacao_organicos, 
+              venda_consumidorfinal, 
+              registro_ativo 
+              FROM 
+                PRODUTOR
+              WHERE 
+                registro_ativo 
+              AND
+                LOWER(
+                  CONCAT(
+                      coalesce(nome,''),        
+                      coalesce(nome_propriedade,''),           
+                      coalesce(cpf_cnpj,''),               
+                      coalesce(endereco,''),         
+                      coalesce(bairro,'')
+                  )
+                )
+              LIKE @filtro
+              LIMIT 50""",
+            //Aplica uma filtro na consulta:
+            substitutionValues: {"filtro": "%" + filtro.toLowerCase() + "%"});
+
+    //Preenche a lista de produtos:
+    for (final row in results) {
+      Produtor produtor = Produtor();
+      produtor.id = row["produtor"]["id"];
+      produtor.certificadora = Certificadora()
+        ..id = row["produtor"]["certificadora_id"];
+      produtor.grupo = Grupo()..id = row["produtor"]["grupo_id"];
+      produtor.nome = row["produtor"]["nome"];
+      produtor.nomePropriedade = row["produtor"]["nomePropriedade"];
+      produtor.cpfCnpj = row["produtor"]["cpfCnpj"];
+      produtor.endereco = row["produtor"]["endereco"];
+      produtor.numero = row["produtor"]["numero"];
+      produtor.bairro = row["produtor"]["bairro"];
+      produtor.cidade = Cidade()..id = row["produtor"]["cidade"];
+      produtor.telefone = row["produtor"]["telefone"];
+      produtor.latitude = row["produtor"]["latitude"];
+      produtor.longitude = row["produtor"]["longitude"];
+      produtor.certificacaoOrganicos =
+          row["produtor"]["certificacao_organicos"];
+      produtor.vendaConsumidorFinal = row["produtor"]["venda_consumidorfinal"];
+      produtor.ativo = row["produtor"]["registro_ativo"];
+    }
+    return produtores;
+  }
 }
