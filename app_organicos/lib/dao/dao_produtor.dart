@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:app_organicos/modelo/certificadora.dart';
 import 'package:app_organicos/modelo/cidade.dart';
 import 'package:app_organicos/modelo/grupo.dart';
