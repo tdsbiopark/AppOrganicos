@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 class TelaCadastroProduto extends StatefulWidget {
   //Controle do produto:
   ControleProduto _controle;
-  Function _onFinishedInsert;
 
   //Recebe uma função por parametro, é executa apos terminar o processo de insert
   Function _onFinishedInsert;
@@ -16,29 +15,20 @@ class TelaCadastroProduto extends StatefulWidget {
 
   @override
   _TelaCadastroProdutoState createState() =>
-<<<<<<< HEAD
-=======
       //construtor da tela, recebe um controle e uma função
+      _TelaCadastroProdutoState(this._controle, this._onFinishedInsert);
 }
+
 //Classe de estado, define a estrutura e o estado da tela:
 class _TelaCadastroProdutoState extends State<TelaCadastroProduto> {
   //Instancia o controlador:
   ControleProduto _controle;
-<<<<<<< HEAD
-  Function _onFinishedInsert;
-
-=======
 
   //Instancia o controle do tipo produto:
->>>>>>> origin/DevelopAndre
   ControleTipoProduto _controleTipoProduto = ControleTipoProduto();
 
-<<<<<<< HEAD
-  _TelaCadastroProdutoState(this._controle, this._onFinishedInsert);
-=======
   //funcao:é executa apos terminar o processo de insert
   Function _onFinishedInsert;
->>>>>>> origin/DevelopAndre
 
   //Refencia um widge , referencia , identifica, ponteiro para os widget
   var _chaveFormulario = GlobalKey<FormState>();
@@ -56,13 +46,9 @@ class _TelaCadastroProdutoState extends State<TelaCadastroProduto> {
       //valva o produto em edição: apos terminar de gravar then ....
       //faça o fechamento da tela
       _controle.gravarProdutoEmEdicao().then((value) {
-<<<<<<< HEAD
-        if (_onFinishedInsert != null) _onFinishedInsert();
-=======
         //e o metodo for diferente de null executa o metodo
         if (_onFinishedInsert != null) _onFinishedInsert();
         //Pop - tira a tela da pilha
->>>>>>> origin/DevelopAndre
         Navigator.of(context).pop();
       });
     }
