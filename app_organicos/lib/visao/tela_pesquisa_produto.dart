@@ -70,7 +70,7 @@ class _TelaPesquisaProdutoState extends State<TelaPesquisaProduto> {
                       hintStyle: new TextStyle(color: Colors.white)),
                   autofocus: true);
             } else {
-              //termine a pesquisa, moda o appBar devolta
+              //termine a pesquisa, muda o appBar devolta
               _handleSearchEnd();
             }
           });
@@ -187,12 +187,13 @@ class _TelaPesquisaProdutoState extends State<TelaPesquisaProduto> {
                                 //Ação ao clicar no botão Editar, passa o produto da linha para
                                 //produto em edução:
                                 _controle.produtoEmEdicao = produto;
-                                //quando exclui apenas desativa
+                                //quando exclui apenas desativa no banco
                                 _controle.produtoEmEdicao.ativo = false;
+                                //Grava com o campo ativo = false
                                 _controle.gravarProdutoEmEdicao();
                                 //Atualiza a lista na tela
                                 setState(() {
-                                  //Pega a lista, e remove o item pelo indice
+                                  //Pega a lista, e remove o item desativado, pelo indice
                                   _controle.produtosPesquisados
                                       .removeAt(indice);
                                 });

@@ -12,7 +12,7 @@ class ControleProdutor {
   List<Produtor> produtoresPesquisados;
 
   //Metodo assincrono para gravar:
-  Future<void> gravarProdutoEmEdicao() async {
+  Future<void> gravarProdutorEmEdicao() async {
     await _dao.gravar(produtorEmEdicao);
   }
 
