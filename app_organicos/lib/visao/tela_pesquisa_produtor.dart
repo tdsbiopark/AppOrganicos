@@ -1,34 +1,29 @@
-import 'package:app_organicos/controle/controle_produto.dart';
-import 'package:app_organicos/modelo/produto.dart';
-import 'package:app_organicos/visao/tela_cadastro_produto.dart';
+import 'package:app_organicos/controle/controle_produtor.dart';
+import 'package:app_organicos/modelo/produtor.dart';
+import 'package:app_organicos/visao/tela_cadastro_produtor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-class TelaPesquisaProduto extends StatefulWidget {
-  TelaPesquisaProduto({Key key}) : super(key: key);
+class TelaPesquisaProdutor extends StatefulWidget {
+  TelaPesquisaProdutor({Key key}) : super(key: key);
 
   @override
-  _TelaPesquisaProdutoState createState() => _TelaPesquisaProdutoState();
+  _TelaPesquisaProdutorState createState() => _TelaPesquisaProdutorState();
 }
 
-//Classe privada, define a estrutura da tela:
-class _TelaPesquisaProdutoState extends State<TelaPesquisaProduto> {
-  //Instancia o controlador do produto:
-  ControleProduto _controle = ControleProduto();
+class _TelaPesquisaProdutorState extends State<TelaPesquisaProdutor> {
+  ControleProdutor _controle = ControleProdutor();
 
-  //Cria propriedade para definir o icone
   Icon iconeBotaoPesquisa = new Icon(
     Icons.search,
     color: Colors.white,
   );
 
-  //Titulo da barra - Criar a propriedade para definir um texto da tela
-  Widget _appBarTitle = Text("Lista de Produtos");
+  Widget _appBarTitle = Text("Lista de Produtores");
 
   //Controller de campo de texto de pesquisa:
   TextEditingController _controladorPesquisa = new TextEditingController();
 
-  //Metodo retorna widget - Retorna Barra com comportamento - Retorna o appBar
   Widget buildBar(BuildContext context) {
     //Retorna o appBar - Barra de pesquisa no topo
     return new AppBar(centerTitle: true, title: _appBarTitle, actions: <Widget>[
@@ -89,7 +84,7 @@ class _TelaPesquisaProdutoState extends State<TelaPesquisaProduto> {
       );
       //Retorna o titulo da tela:
       _appBarTitle = new Text(
-        "Lista de Produtos",
+        "Lista de Produtores",
         style: new TextStyle(color: Colors.white),
       );
       //Limpa o campo da pesquisa
@@ -100,7 +95,7 @@ class _TelaPesquisaProdutoState extends State<TelaPesquisaProduto> {
   }
 
   //Metoto para Formatar a lista: a cada linha recebe um poduto
-  Widget _linhaListaZebrada(Produto produto, int indice) {
+  Widget _linhaListaZebrada(Produtor produtor, int indice) {
     //Componente que desliza a linha - import - adicionado a componente - aula: 03/03
     return Slidable(
         //
@@ -118,13 +113,14 @@ class _TelaPesquisaProdutoState extends State<TelaPesquisaProduto> {
             //linha de uma lista:
             child: ListTile(
                 //texto da linha
-                title: new Text("Nome: " + produto.nome,
+                title: new Text("Nome: " + produtor.nome,
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 18,
                         fontWeight: FontWeight.normal),
                     textAlign: TextAlign.left),
-                subtitle: new Text("Preço unit.: " + produto.preco.toString(),
+                subtitle: new Text(
+                    "Propriedade: " + produtor.nomePropriedade.toString(),
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 10,
@@ -140,21 +136,21 @@ class _TelaPesquisaProdutoState extends State<TelaPesquisaProduto> {
             //Evento ao arrastar
             onTap: () {
               //Tratamento botão editar
-              //Carregar aqui o produto completo do banco quando necessário.
+              //Carregar aqui o produtor completo do banco quando necessário.
               Function onFinishedInsert = () {
                 setState(() {
                   _controle.atualizarPesquisa();
                 });
               };
               //carrega a tela com om objeto vazio, campos limpos
-              _controle.produtoEmEdicao = produto;
-              //Adiciona a nova tela na pilha, Carrega a tela de cadastro para cadastrar novo produto
+              _controle.produtorEmEdicao = produtor;
+              //Adiciona a nova tela na pilha, Carrega a tela de cadastro para cadastrar novo produtor
               Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        //Instancia o formulario do produto: mais o metodos onFinishedInsert
-                        TelaCadastroProduto(this._controle, onFinishedInsert)),
+                        //Instancia o formulario do produtor: mais o metodos onFinishedInsert
+                        TelaCadastroProdutor(this._controle, onFinishedInsert)),
               );
             },
           ),
@@ -184,17 +180,17 @@ class _TelaPesquisaProdutoState extends State<TelaPesquisaProduto> {
                               //estado:
                               setState(() {
                                 //Tratamento botão excluir
-                                //Ação ao clicar no botão Editar, passa o produto da linha para
-                                //produto em edução:
-                                _controle.produtoEmEdicao = produto;
+                                //Ação ao clicar no botão Editar, passa o produtor da linha para
+                                //produtor em edução:
+                                _controle.produtorEmEdicao = produtor;
                                 //quando exclui apenas desativa no banco
-                                _controle.produtoEmEdicao.ativo = false;
+                                _controle.produtorEmEdicao.ativo = false;
                                 //Grava com o campo ativo = false
-                                _controle.gravarProdutoEmEdicao();
+                                _controle.gravarProdutorEmEdicao();
                                 //Atualiza a lista na tela
                                 setState(() {
                                   //Pega a lista, e remove o item desativado, pelo indice
-                                  _controle.produtosPesquisados
+                                  _controle.produtoresPesquisados
                                       .removeAt(indice);
                                 });
                               });
@@ -232,7 +228,7 @@ class _TelaPesquisaProdutoState extends State<TelaPesquisaProduto> {
           //Evento:
           onPressed: () {
             //Recebe o produto sendo editado
-            _controle.produtoEmEdicao = Produto();
+            _controle.produtorEmEdicao = Produtor();
 
             //Função responsavel por avisar a outra tele - depois te terminar de inserir
             Function onFinishedInsert = () {
@@ -251,14 +247,14 @@ class _TelaPesquisaProdutoState extends State<TelaPesquisaProduto> {
               MaterialPageRoute(
                   builder: (context) =>
                       //Chama a tela de cadastro: Recebe um controle e uma metodo por parametro
-                      TelaCadastroProduto(this._controle, onFinishedInsert)),
+                      TelaCadastroProdutor(this._controle, onFinishedInsert)),
             );
           },
         ),
         //Corpo: onde fica a lista - recebe uma lista futura
         body: FutureBuilder(
             //lista futura de produtos: fica monitorando ela
-            future: _controle.fProdutosPesquisados,
+            future: _controle.fProdutoresPesquisados,
             //fica monstrado algo emquando a lista não foi carrgada
             builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
               //Retornou dados na lista?
@@ -272,16 +268,16 @@ class _TelaPesquisaProdutoState extends State<TelaPesquisaProduto> {
                 )));
 
               //Passa a lista para uma variavel
-              _controle.produtosPesquisados = snapshot.data;
+              _controle.produtoresPesquisados = snapshot.data;
               //Carregar a lista de objetos:
               return ListView.builder(
                 //pega a quantidade de objetos
-                itemCount: _controle.produtosPesquisados.length,
+                itemCount: _controle.produtoresPesquisados.length,
                 //pega o item da linha a aplica a formação da linha
                 itemBuilder: (BuildContext context, int index) {
                   //aplica o padrao a linha da lista na tela
                   return _linhaListaZebrada(
-                      _controle.produtosPesquisados[index], index);
+                      _controle.produtoresPesquisados[index], index);
                 },
               );
             }));

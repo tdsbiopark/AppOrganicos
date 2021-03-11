@@ -1,0 +1,42 @@
+var _chaveFormulario = GlobalKey<FormState>();
+final controladorCampo = TextEditingController();
+
+Form(
+        key: _chaveFormulario,
+        child: Column(
+        children: <Widget>[
+                TextFormField(
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.teal)),
+                          filled: true,
+                          // prefixIcon: Icon(Icons.person),
+                          hintText: "Meu Label",
+                          labelText: "Meu Label"),
+                      keyboardType: TextInputType.text,
+                      controller: controladorCampo,
+                      onSaved: (String value) {
+                        minhaVariavel = value;
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Campo obrigatório!";
+                        }
+                        return null;
+                      }
+				)
+        ],
+        ),
+);
+
+
+
+void eventoBotaoQualquer() {
+    if (_chaveFormulario.currentState != null && _chaveFormulario.currentState.validate()) {
+      _chaveFormulario.currentState.save();
+	  //Daqui em diante os dados nas variáveis podem ser manipulados para qualquer coisa
+	}
+}	
+
+para atribuir ou pegar o valor de um campo usando um controlador:
+controladorCampo.text = "Outro texto";

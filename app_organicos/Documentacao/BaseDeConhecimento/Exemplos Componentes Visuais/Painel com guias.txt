@@ -1,0 +1,24 @@
+DefaultTabController(
+        length: 4,
+        child: Scaffold(
+          appBar: AppBar(
+            bottom: TabBar(
+              tabs: [                
+                Tab(icon: Icon(Icons.school)),
+                Tab(icon: Icon(Icons.group)),
+                Tab(icon: Icon(Icons.multiline_chart)),
+                Tab(icon: Icon(Icons.system_update)),
+              ],
+            ),
+            title: Text('SGE-IFPR (Gestão Educacional)'),
+          ),
+          body: TabBarView(
+            children: [
+              Icon(Icons.school),
+              Icon(Icons.group),
+              Icon(Icons.multiline_chart),
+              Icon(Icons.system_update),
+            ],
+          ),
+        ),      
+);

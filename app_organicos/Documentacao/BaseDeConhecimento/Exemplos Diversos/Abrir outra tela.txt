@@ -1,0 +1,21 @@
+//Abrindo uma outra tela diretamente
+Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => NomeClasseTela()),
+              );
+
+//Abrindo uma outra tela através de rotas
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      routes: {"minhaTela": (context) => MinhaTela()},
+    );
+  }
+}
+
+Navigator.pushNamed(context, "minhaTela", arguments: "Obj Parametro"); //Arguments são opcionais
+
+//Pegar um parametro do enviado a uma tela
+Object param = ModalRoute.of(context).settings.arguments;

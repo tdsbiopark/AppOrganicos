@@ -1,0 +1,17 @@
+Stack(
+          children: <Widget>[
+            Image.asset(
+              "lib/imagens/logo_biopark.png",
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              fit: BoxFit.fill,
+            ),
+            Align(
+                alignment: Alignment.center,
+                child: RaisedButton(
+                  child: Text("Ola"),
+                  onPressed: () {},
+                  color: Colors.green,
+                ))
+          ],
+)

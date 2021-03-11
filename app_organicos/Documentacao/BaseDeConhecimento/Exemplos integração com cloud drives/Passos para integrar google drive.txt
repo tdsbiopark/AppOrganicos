@@ -1,0 +1,111 @@
+Criar um projeto no console do Firebase
+Ir para o Google API Console e Ativar a API Google Drive para o projeto recém criado
+
+Incluir o pacote flutter_automation no arquivo pubspec do projeto para auxiliar na geração da chave de assinatura Android do APP.
+
+flutter_automation: ^1.4.0 
+
+ ###Comando para gerar o keyStore### 
+flutter pub pub run flutter_automation --android-sign
+
+                              # CN = Enter your complete name.
+                              # OU = Organisation Unit (Just write student if you are student)
+                              # O = Organistaion (Just write student if you are student)
+                              # L = Your City or Locality
+                              # S = Your State
+                              # C = Use your Country Code (IN for India)
+                              #EXEMPLO# CN=sistemagestorobras, OU=Student, O=Student, L=Brasil, S=Parana, C=BR
+
+O comando criará o arquivo /keys/keystore.jks na pasta do projeto e também criará o arquivo key.properties no módulo android com os dados de abertura do keystore
+
+Vá para o arquivo build.graddle do módulo app e configure para usar o chave de release também para debug:
+ debug {
+            signingConfig signingConfigs.release
+       }
+
+###Comando para mostrar as chaves geradas### 
+keytool -list -v -alias sistemagestorobras -keystore diretorioDoProjeto/keys/keystore.jks
+
+
+Copie as chaves SHA-1 e SHA-256 e crie os acessos aos aplicativos Android e iOs no firebase, incluindo no app android as chaves SHA recém geradas
+Baixe os arquivos de configuração do firebase e inclua nas pastas Android e iOS do APP
+
+Depois siga com o login do google em seu app. Os seguintes métodos podem ser considerados (plugin google_sign_in):
+
+Future<GoogleSignInAccount> loginWithGoogleAccount() async {
+  //Se chamado no escopo "https://www.googleapis.com/auth/drive.appdata" os arquivos ficam ocultos e isolados no drive
+  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ["https://www.googleapis.com/auth/drive"]);
+  if (_googleSignIn.currentUser != null) return _googleSignIn.currentUser;
+  try {
+    return await _googleSignIn.signInSilently().catchError((asyncError) {
+      print('signInSilently AsyncError: $asyncError');
+    });
+  } catch (e) {
+    print('$e');
+  }
+  return null;
+}
+
+Future<GoogleSignInAuthentication> loginWithGoogleAccountAndGetSignInAuthentication() async {
+  try {
+    GoogleSignInAccount googleSignInAccount = await loginWithGoogleAccount();
+    return googleSignInAccount.authentication.catchError((asyncError) {
+      print('AsyncError: $asyncError');
+    });
+  } catch (error) {
+    print(error);
+    return null;
+  }
+}
+
+Future<String> loginWithGoogleAccountAndGetAccessToken() async {
+  try {
+    GoogleSignInAccount googleSignInAccount = await loginWithGoogleAccount();
+    GoogleSignInAuthentication aut = await googleSignInAccount.authentication.catchError((asyncError) {
+      print('AsyncError: $asyncError');
+    });
+    return aut.accessToken;
+  } catch (error) {
+    print(error);
+    return null;
+  }
+}
+
+Future<Map<String, String>> loginWithGoogleAccountAndGetAuthHeaders() async {
+  try {
+    GoogleSignInAccount googleSignInAccount = await loginWithGoogleAccount();
+    return await googleSignInAccount.authHeaders.catchError((asyncError) {
+      print('AsyncError: $asyncError');
+    });
+  } catch (error) {
+    print(error);
+    return null;
+  }
+}
+
+/////////////////////Caso queira logar no Firebase utilizando o mesmo login do google, siga os passos abaixo/////////////////
+
+loginWithGoogleAccountAndGetSignInAuthentication().then((googleSignInAuthentication) {
+      final AuthCredential credentials = GoogleAuthProvider.getCredential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+
+      print("Usuário logou via google e recebeu o token : ${googleSignInAuthentication.idToken}");
+      final FirebaseAuth auth = FirebaseAuth.instance;
+      auth.signOut().then((value) {
+        auth.signInWithCredential(credentials).then((result) {
+          if (result.user != null) {
+            result.user.getIdToken().then((idToken) {
+              if (idToken != null) print("Usuário logou no firebase e recebeu o ID Usuário: ${result.user.uid}");
+            });
+          }
+        });
+      });
+});
+
+Após o primeiro login ele adicionará um usuário na Aba Authentication > Users com um UUID que pode ser copiado e inserido nas regras de segurança do BD
+
+allow read, write: if request.auth.uid != null && request.auth.uid == "meuIdUsuarioCriadoPassoAnterior";
+
+

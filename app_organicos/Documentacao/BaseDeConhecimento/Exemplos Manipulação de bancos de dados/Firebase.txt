@@ -1,0 +1,129 @@
+Criar um projeto no Firebase (online)
+Criar um banco de dados e uma coleção de dados (online na guia 'Database')
+Fornecer as permissões de leitura e escrita ao BD (online) (aba 'regras' da guia 'Database')
+Criar arquivo de login habilitando o BD para uma plataforma em "Project Overview" > "Adicionar app" e escolhendo a plataforma desejada. 
+Copiar o arquivo de configuração para dentro de /Android/app
+
+----------------------------------------------------------------------------------------
+Em build.gradle de /Android incluir a seguinte linha na sessão de dependências:
+dependencies {
+        classpath 'com.google.gms:google-services:4.3.3'
+}
+
+----------------------------------------------------------------------------------------
+Em build.gradle de /Android/app incluir a seguinte linha ao final do arquivo:
+apply plugin: 'com.google.gms.google-services' 
+
+No mesmo arquivo adicionar a seguinte linha em defaultConfig:
+
+defaultConfig {
+   multiDexEnabled true
+}
+
+dependencies {
+    implementation 'com.google.firebase:firebase-analytics:17.2.2'
+    implementation "androidx.multidex:multidex:2.0.0"
+}
+
+Trocar o minSdkVersion de 16 para 21 (Android 5)
+
+----------------------------------------------------------------------------------------
+Em /Android/settings.gradle adicionar as seguintes linhas ao final do arquivo:
+
+def flutterProjectRoot = rootProject.projectDir.parentFile.toPath()
+
+def plugins = new Properties()
+def pluginsFile = new File(flutterProjectRoot.toFile(), '.flutter-plugins')
+if (pluginsFile.exists()) {
+    pluginsFile.withReader('UTF-8') { reader -> plugins.load(reader) }
+}
+
+plugins.each { name, path ->
+    def pluginDirectory = flutterProjectRoot.resolve(path).resolve('android').toFile()
+    include ":$name"
+    project(":$name").projectDir = pluginDirectory
+}
+
+----------------------------------------------------------------------------------------
+Em pubspec.yaml incluir as seguintes bibliotecas:
+  cloud_firestore: ^0.13.7
+  firebase_analytics: ^5.0.15
+  
+Em build do StateLessWidget que inicia a aplicação, incluir código para habilitar uso de cache no Firebase, bem como seu tamanho (Caches maiores deixam o app mais lento devido a falta de indices):
+Firestore.instance.settings(persistenceEnabled: true, cacheSizeBytes: 500000000); //500 mega expressos em bytes. Se não informado, o padrão é 100MB
+-------------------------------------------------------------------------------------------------------------------------------------
+								UTILIZAÇÂO
+-------------------------------------------------------------------------------------------------------------------------------------
+void gravar(MinhaClasse meuObjeto{
+    DocumentReference doc = Firestore.instance.collection('nomeDaColecao').document(meuObjeto.id); //Se o objeto já estive no BD ele será carregado na variável doc
+    Map<String, dynamic> dados= {
+      "campo1": meuObjeto.campo1,
+      "campo2": meuObjeto.campo2
+    };
+    doc.setData(dados);
+    meuObjeto.id = doc.documentID; //Caso tenha inserido um documento novo, pega o id gerado
+}
+----------------------------------------------------------------------------------------------------------------
+@override
+Future<MinhaClasse> carregarObjetoPorID(String id) async {    
+    DocumentSnapshot doc = await Firestore.instance.collection("nomeColecao").document(id).get();
+    MinhaClasse meuObjeto = MinhaClasse();
+	meuObjeto.id = doc.documentID;
+	meuObjeto.campo = doc['campo'];
+    return meuObjeto;
+}
+----------------------------------------------------------------------------------------------------------------
+Future<List<MinhaClasse>> pesquisar({String filtro = ""}) async {
+    List<MinhaClasse> meusObjetos = List();
+
+    Query q = Firestore.instance.collection('nomeColecao').where("campo1", isEqualTo: true).orderBy("campo2", descending: false).startAt([filtro]).endAt([filtro + '\uf8ff']);
+    //o termo'\uf8ff' indica qualquer caractere após o filtro.
+    //Para pesquisas mais elaboradas, como like, é necessário proceder com ElasticSearch, que é um serviço cloud pago da google
+
+    var data = await q.getDocuments();
+    for (DocumentSnapshot doc in data.documents) {
+      MinhaClasse meuObjeto = MinhaClasse();
+	  meuObjeto.id = doc.documentID;
+	  meuObjeto.campo = doc['campo'];
+	  
+	  //Simulação de chaves estrangeiras
+	  meuObjeto.objetoOutraColecao = await carregarObjetoPorID(doc['IdOutraColecao']);
+      
+      meusObjetos.add(meuObjeto);
+    }
+
+    return meusObjetos;
+}
+
+Obs:
+Ao criar a primeira consulta com query, o firebase retornará um erro pedindo para criar um índice.
+No console do firebase clique sobre a aba "Indices" da guia "Database" e clique em criar um novo indice. 
+Informe o nome da coleção para o índice e inclua os campos envolvidos em sua consulta, marcando a bolinha de que o indice tem escopo de coleção.
+Aguarde o índice ser gerado (Pode demorar uns minutos).
+
+
+
+//////////////////-------- FIREBASE AUTH -------------/////////////////////////////////
+No console do Firebase,vá para Authentication > aba Users, e cadastre um ou mais usuários
+Na aba Sign-in method habilite E-mail/Senha
+
+Vá para Database aba Regras e mude a regra para:
+allow read, write: if request.auth.uid != null;
+Esta regra permite que todo usuário autenticado tenha acesso de leitura e escrita. Também podem ser feitas regras para um usuários específico, tal como:
+allow read, write: if request.auth.uid != null && request.auth.uid == "meuIdUsuarioCriadoPassoAnterior";
+
+
+Adicionar a seguinte biblioteca ao projeto
+firebase_core: ^0.5.0 (import 'package:firebase_core/firebase_core.dart';)
+firebase_auth: ^0.18.1+1 (import 'package:firebase_auth/firebase_auth.dart';)
+
+Adicionar o código de login depois de runApp no método main do app:
+
+final FirebaseAuth auth = FirebaseAuth.instance;
+await auth.signOut();
+  
+UserCredential result = await auth.signInWithEmailAndPassword(email: 'SEU_EMAIL', password: 'SUA_SENHA');
+if (result.user != null && (await result.user.getIdToken() != null)) {
+   print("USUÁRIO LOGOU NO FIREBASE!!");
+}
+

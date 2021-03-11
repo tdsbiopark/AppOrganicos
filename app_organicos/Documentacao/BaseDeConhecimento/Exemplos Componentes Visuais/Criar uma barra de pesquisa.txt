@@ -1,0 +1,60 @@
+  Icon iconeBotaoPesquisa = new Icon(
+    Icons.search,
+    color: Colors.white,
+  );
+
+  Widget _appBarTitle = Text("Titulo da Tela");
+  TextEditingController _controladorPesquisa = new TextEditingController();
+
+  Widget buildBar(BuildContext context) {
+    return new AppBar(centerTitle: true, title: _appBarTitle, actions: <Widget>[
+      new IconButton(
+        icon: iconeBotaoPesquisa,
+        onPressed: () {
+          setState(() {
+            if (this.iconeBotaoPesquisa.icon == Icons.search) {
+              this.iconeBotaoPesquisa = new Icon(
+                Icons.close,
+                color: Colors.white,
+              );
+              _appBarTitle = new TextField(
+                  textInputAction: TextInputAction.search,
+                  onSubmitted: (filtro) {
+                    setState(() {
+                      //Insira aqui a regra de pesquisa utilizando a variável "filtro"
+                    });
+                  },
+                  controller: _controladorPesquisa,
+                  style: new TextStyle(
+                    color: Colors.white,
+                  ),
+                  decoration: new InputDecoration(
+                      prefixIcon: new Icon(Icons.search, color: Colors.white),
+                      hintText: "Pesquisar...",
+                      hintStyle: new TextStyle(color: Colors.white)),
+                  autofocus: true);
+            } else {
+              _handleSearchEnd();
+            }
+          });
+        },
+      ),
+    ]);
+  }
+
+  void _handleSearchEnd() {
+    setState(() {
+      iconeBotaoPesquisa = new Icon(
+        Icons.search,
+        color: Colors.white,
+      );
+      _appBarTitle = new Text(
+        "Título da Tela",
+        style: new TextStyle(color: Colors.white),
+      );
+      _controladorPesquisa.clear();
+      
+	  //Aqui podem ser inseridos mais regras, como por exemplo, pesquisar por todos os registros
+	  //ao fechar o fitro de pesquisa
+    });
+  }

@@ -1,0 +1,24 @@
+TextFormField(
+                decoration: const InputDecoration(
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.teal)),
+                              filled: true,
+                              // prefixIcon: Icon(Icons.person),
+                              hintText: "Meu Titulo",
+                              labelText: "Meu Titulo"),
+                
+				keyboardType: TextInputType.text,
+                
+				initialValue: "",
+                
+				onSaved: (String value) {
+                            meuObjeto.minhaVariavel = value;
+                         },
+                
+				validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Este campo é obrigatório!";
+                            }
+                            return null;
+                           }
+)

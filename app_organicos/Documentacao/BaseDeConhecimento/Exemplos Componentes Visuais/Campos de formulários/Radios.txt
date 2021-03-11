@@ -1,0 +1,16 @@
+Row(
+                                children: <Widget>[
+                                  Radio<String>(
+                                    materialTapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                    value: "valorDeSaidaDesejadoParaORadio",
+                                    groupValue: meuObjeto.meuCampo,
+                                    onChanged: (String value) {
+                                      setState(() {
+                                        meuObjeto.meuCampo = value;
+                                      });
+                                    },
+                                  ),
+                                  Text("Titulo do Radio")
+                                ],
+)

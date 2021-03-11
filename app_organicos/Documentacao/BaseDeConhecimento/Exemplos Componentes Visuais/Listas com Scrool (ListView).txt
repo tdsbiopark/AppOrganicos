@@ -1,0 +1,175 @@
+//Lista fixa para uso com componentes fixos tal como um menu Drawer
+ListView(
+                    padding: EdgeInsets.zero,
+                    children: <Widget>[
+                      Container(
+                          color: Colors.blueGrey[900],
+                          child: ListTile(
+                              title: new Text("TITULO 1",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.normal),
+                                  textAlign: TextAlign.center))),
+                      Container(
+                          color: Colors.blueGrey[700],
+                          child: ListTile(
+                              onTap: () {
+                                //evento de clique
+                              },
+                              title: new Text("ITEM 1 T1",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.normal),
+                                  textAlign: TextAlign.center))),
+                      Container(
+                          color: Colors.blueGrey[700],
+                          child: ListTile(
+                              title: new Text("ITEM 2 T1",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.normal),
+                                  textAlign: TextAlign.center))),
+                      Container(
+                          color: Colors.blueGrey[900],
+                          child: ListTile(
+                              title: new Text("TITULO 2",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.normal),
+                                  textAlign: TextAlign.center))),
+                      Container(
+                          color: Colors.blueGrey[700],
+                          child: ListTile(
+                              title: new Text("ITEM 1 T2",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.normal),
+                                  textAlign: TextAlign.center)))
+                    ],
+);
+
+//--------------------------------------------------------------------------------------------------------------------------------
+//ListView proveniente de uma lista de objetos
+ListView.builder(
+                      itemCount: minhaLista.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return _linhaListaZebrada(minhaLista[index], index);
+                      },
+)
+
+Widget _linhaListaZebrada(Objeto objeto, int indice) {
+    return Container(
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey, width: 0.8),
+            color: indice % 2 == 0 ? Colors.grey.shade300 : Colors.white),
+        child: ListTile(
+            title: new Text(objeto.campoString,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.normal),
+                textAlign: TextAlign.center)));
+}
+//--------------------------------------------------------------------------------------------------------------------------------
+//ListView proveniente de uma lista de objetos obtida de forma Asyncrona e com label de "dados não encontrados" caso não retorne nada (Banco de dados)
+FutureBuilder(
+          future: minhaListaFutura,
+          builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+            if (!snapshot.hasData)
+              return Center(
+                  child: new Container(
+                      child: Text(
+                "A consulta não retornou dados!",
+                style: TextStyle(fontSize: 20),
+              )));
+
+            minhaListaCompleta = snapshot.data; //Carrega os dados retornados em uma lista (não futura) para ser mostrada na listview
+
+           return ListView.builder(
+                      itemCount: minhaListaCompleta.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return _linhaListaZebrada(minhaListaCompleta[index], index);
+                      },
+           );
+})
+
+Widget _linhaListaZebrada(Objeto objeto, int indice) {
+    return Container(
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey, width: 0.8),
+            color: indice % 2 == 0 ? Colors.grey.shade300 : Colors.white),
+        child: ListTile(
+            title: new Text(objeto.campoString,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.normal),
+                textAlign: TextAlign.center)));
+}
+//----------------------------------------------------
+Biblioteca flutter_slidable: ^0.5.7 (import 'package:flutter_slidable/flutter_slidable.dart';)
+
+Widget _linhaListaZebrada(Objeto objeto, int indice) {
+    return Slidable(
+        actionPane: SlidableDrawerActionPane(),
+        actionExtentRatio: 0.25,
+        child: Container(
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey, width: 0.8),
+                color: indice % 2 == 0 ? Colors.grey.shade300 : Colors.white),
+            child: ListTile(
+                title: new Text(objeto.campoString,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.normal),
+                    textAlign: TextAlign.center))),
+        secondaryActions: <Widget>[
+          new IconSlideAction(
+            caption: 'Editar',
+            color: Colors.green,
+            icon: Icons.edit,
+            onTap: () {
+              //Tratamento botão editar
+            },
+          ),
+          new IconSlideAction(
+            caption: 'Deletar',
+            color: Colors.red,
+            icon: Icons.delete,
+            onTap: () => setState(() {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext builder) {
+                    return new AlertDialog(
+                      title: new Text("Confirmação"),
+                      content:
+                          new Text("Deseja realmente excluir este registro?"),
+                      actions: <Widget>[
+                        new FlatButton(
+                            onPressed: () {
+                              setState(() {
+                                //Tratamento botão excluir
+                              });
+                              
+                              Navigator.of(context).pop();
+                            },
+                            child: new Text("Sim")),
+                        new FlatButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: new Text("Não")),
+                      ],
+                    );
+                  });
+            }),
+          ),
+        ]);
+}
+

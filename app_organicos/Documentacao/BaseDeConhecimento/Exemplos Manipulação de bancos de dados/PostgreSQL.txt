@@ -1,0 +1,64 @@
+Adicionar a Biblioteca para manipular bancos de dados PostgreSQL no arquivo pubspec.yaml (https://pub.dev/packages/postgres#-readme-tab-)
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  postgres: ^2.2.0
+
+-----------------------------------------------------------------
+Criar arquivo com o método de conexão:
+
+import 'package:postgres/postgres.dart';
+
+PostgreSQLConnection _conexaoPostgreSQL;
+
+Future<PostgreSQLConnection> getConexaoPostgreSQL() async {
+    if (_conexaoPostgreSQL == null || _conexaoPostgreSQL.isClosed) {
+      _conexaoPostgreSQL = new PostgreSQLConnection(
+          "10.0.0.113", 5432, "queijos",
+          username: "postgres", password: "postgres");
+      await _conexaoPostgreSQL.open();
+    }
+
+  return _conexaoPostgreSQL;
+}
+-----------------------------------------------------------------
+Inserindo/Atualizando dados em uma transação
+
+PostgreSQLConnection conexao = await getConexaoPostgreSQL();
+await conexao.transaction((ctx) async {
+      await ctx.query(
+            "insert into pessoa (nome, telefone, endereco, tipofiscal, documento, tipopessoa) " +
+                "VALUES (@nome, @telefone, @endereco, @tipofiscal, @documento, @tipopessoa)",
+            substitutionValues: {
+              "nome": pessoa.nome,
+              "telefone": pessoa.telefone,
+              "endereco": pessoa.endereco,
+              "tipofiscal": pessoa.tipoFiscal,
+              "documento": pessoa.documento,
+              "tipopessoa": pessoa.tipoPessoa
+      });
+      
+});
+
+-----------------------------------------------------------------
+Pesquisando dados
+
+Future<List<MeuObjeto>> pesquisar(String filtro) async {
+    PostgreSQLConnection conexao = await getConexaoPostgreSQL();
+    List<MeuObjeto> objetos = List();
+
+    List<Map<String, Map<String, dynamic>>> results = await conexao
+        .mappedResultsQuery(
+            "SELECT * from minhatabela " +
+                "where meucampo like @filtro ",
+            substitutionValues: {"filtro": "%"+filtro+"%"});
+
+    for (final row in results) {
+      MeuObjeto o = MeuObjeto();
+      o.meucampo = row["minhatabela"]["meucampo"];     
+      objetos.add(p);
+    }
+    return objetos;
+  }
+

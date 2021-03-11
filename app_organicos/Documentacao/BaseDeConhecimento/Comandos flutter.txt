@@ -1,0 +1,19 @@
+flutter doctor (Verifica se a instalação do flutter está ok)
+
+flutter --version (Verifica a versão do flutter)
+
+flutter channel beta (Muda para o canal de atualização beta do flutter)
+
+flutter channel stable (Muda para o canal de atualização stable do flutter)
+
+flutter config --enable-web (Habilita fazer build de aplicativos para web)
+
+flutter config --enable-macos-desktop (Habilita fazer build de aplicativos para desktop em mac)
+
+flutter devices (Mostra os disositivos conectados)
+
+flutter create . (Ao executar o comando dentro de um projeto existente, recria o suporte ao aplicativo para web ou desktop)
+
+flutter run -d chrome (Ao executar o comando dentro de um projeto existente, roda o aplicativo na web)
+
+flutter build web (Gera arquivos para deploy em um servidor web)
