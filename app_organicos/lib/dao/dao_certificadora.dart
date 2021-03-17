@@ -28,7 +28,9 @@ class CertificadoraDAO {
     PostgreSQLConnection conexao = await Conexao.getConexao();
     List<Certificadora> certificadoras = List.empty(growable: true);
 
-    List<Map<String, Map<String, dynamic>>> results = await conexao.mappedResultsQuery(
+    List<
+        Map<String,
+            Map<String, dynamic>>> results = await conexao.mappedResultsQuery(
         """SELECT id, nome, registro_ativo  from certificadora where registro_ativo and lower(nome) like @filtro limit 50""",
         substitutionValues: {"filtro": "%" + filtro.toLowerCase() + "%"});
 
