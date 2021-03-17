@@ -12,7 +12,7 @@ class Produtor {
   String endereco;
   String numero;
   String bairro;
-  Cidade cidade;
+  Cidade cidade = Cidade();
   String telefone;
   double latitude;
   double longitude;

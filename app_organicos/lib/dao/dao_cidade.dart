@@ -36,11 +36,12 @@ class CidadeDAO {
     //retorna uma lista: Flutter 2.0 - Cria a lista fazia
     List<Cidade> cidades = List.empty(growable: true);
     //Faz a consulta
-    List<Map<String, Map<String, dynamic>>> results = await conexao
-        .mappedResultsQuery("""SELECT id, nome, estado_id from cidade 
-             where estado_id = @filtro """,
-            //Aplica uma filtro na consulta:
-            substitutionValues: {"filtro": idEstado});
+    List<
+        Map<String,
+            Map<String, dynamic>>> results = await conexao.mappedResultsQuery(
+        """SELECT id, nome, estado_id from cidade where estado_id = @idEstado limit 50 """,
+        //Aplica uma filtro na consulta:
+        substitutionValues: {"idEstado": idEstado});
 
     //Preenche a lista:
     for (final row in results) {

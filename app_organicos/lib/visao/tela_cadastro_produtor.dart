@@ -1,8 +1,11 @@
 import 'package:app_organicos/controle/controle_cidade.dart';
 import 'package:app_organicos/controle/controle_estado.dart';
 import 'package:app_organicos/controle/controle_produtor.dart';
+import 'package:app_organicos/modelo/estado.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../modelo/cidade.dart';
 
 class TelaCadastroProdutor extends StatefulWidget {
   //Controle do produto:
@@ -240,14 +243,129 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
                         }
                         return null;
                       }),
+
                   //Separador
                   SizedBox(
                     height: 10,
                   ),
-//Combo Cidades
+                  //Combo estados -----------------------------------------------------
+                  FutureBuilder(
+                      //pegar o estado selecionado
+                      future: _controleEstado.listar(),
+                      builder:
+                          (BuildContext context, AsyncSnapshot<List> snapshot) {
+                        String labelCampo = "Estado";
+                        //Se nao tem dados...
+                        if (!snapshot.hasData) {
+                          labelCampo = "Carregando Lista de estados...";
+                        }
+                        //recebe a lista vinda do banco: lista vazi ou lista cheia
+                        List<Estado> listaEstados =
+                            snapshot.data == null ? List() : snapshot.data;
+                        //
+                        return DropdownButtonFormField(
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.teal)),
+                              filled: true,
+                              isDense: true,
+                              prefixIcon: Icon(Icons.assignment_ind),
+                              hintText: labelCampo,
+                              labelText: labelCampo),
+                          isExpanded: true,
+                          //lista de objetos:
+                          items: listaEstados
+                              //mapeia a lista de objetos semelhante ao foreach
+                              .map<DropdownMenuItem<Estado>>(
+                                  (Estado estado) => DropdownMenuItem<Estado>(
+                                        value: estado,
+                                        //texto que vai aparcer
+                                        child: Text(estado.nome,
+                                            textAlign: TextAlign.left),
+                                      ))
+                              //ja lista
+                              .toList(),
+                          //recebe o objeto
+                          value: _controle.produtorEmEdicao.cidade.estado,
+                          //validação do campo:
+                          validator: (value) {
+                            if (value == null) {
+                              return "Selecion o estado!";
+                            }
+                            return null;
+                          },
+                          //ao seleciona ja refelete no objeto
+                          onChanged: (Estado value) {
+                            setState(() {
+                              _controle.produtorEmEdicao.cidade.estado = value;
+                            });
+                          },
+                        );
+                      }),
+                  //Separador
+                  SizedBox(
+                    height: 10,
+                  ),
+                  //Combo Cidades -----------------------------------------------------
+                  FutureBuilder(
+                      //pegar o estado selecionado
+                      // future: _controleCidade
+                      //     .listar(_controle.produtorEmEdicao.cidade.estado.id),
+                      future: _controleCidade.listar(16),
+                      builder:
+                          (BuildContext context, AsyncSnapshot<List> snapshot) {
+                        String labelCampo = "Cidade";
+                        //Se nao tem dados...
+                        if (!snapshot.hasData) {
+                          labelCampo = "Carregando Lista de Cidades...";
+                        }
+                        //recebe a lista vinda do banco: lista vazi ou lista cheia
+                        List<Cidade> listaCidades =
+                            snapshot.data == null ? List() : snapshot.data;
+                        //
+                        return DropdownButtonFormField(
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.teal)),
+                              filled: true,
+                              isDense: true,
+                              prefixIcon: Icon(Icons.assignment_ind),
+                              hintText: labelCampo,
+                              labelText: labelCampo),
+                          isExpanded: true,
+                          //lista de objetos:
+                          items: listaCidades
+                              //mapeia a lista de objetos semelhante ao foreach
+                              .map<DropdownMenuItem<Cidade>>(
+                                  (Cidade cidade) => DropdownMenuItem<Cidade>(
+                                        value: cidade,
+                                        //texto que vai aparcer
+                                        child: Text(cidade.nome,
+                                            textAlign: TextAlign.left),
+                                      ))
+                              //ja lista
+                              .toList(),
+                          //recebe o objeto
+                          value: _controle.produtorEmEdicao.cidade,
 
-//Separador
+                          //validação do campo:
+                          validator: (value) {
+                            if (value == null) {
+                              return "Selecion a cidade!";
+                            }
+                            return null;
+                          },
 
+                          //ao seleciona ja refelete no objeto
+                          onChanged: (Cidade value) {
+                            setState(() {
+                              _controle.produtorEmEdicao.cidade = value;
+                            });
+                          },
+                        );
+                      }),
+
+                  //Separador
                   SizedBox(
                     height: 10,
                   ),
