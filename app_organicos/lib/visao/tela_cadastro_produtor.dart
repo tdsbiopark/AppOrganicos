@@ -1,3 +1,5 @@
+import 'package:app_organicos/controle/controle_cidade.dart';
+import 'package:app_organicos/controle/controle_estado.dart';
 import 'package:app_organicos/controle/controle_produtor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +25,11 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
   //Instancia o controlador:
   ControleProdutor _controle;
 
+  //Instancia o controle Estado:
+  ControleEstado _controleEstado = ControleEstado();
+
   //Instancia o controle da Cidade:
-  //ControleCidade _controleCidade = Controlecidade();
+  ControleCidade _controleCidade = ControleCidade();
 
   //Instancia o controle do Grupo:
   //ControleGrupo _controleGrupo = ControleGrupo();
@@ -239,12 +244,10 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
                   SizedBox(
                     height: 10,
                   ),
+//Combo Cidades
 
-                  //Cidade...
-                  //
-                  //
-                  //
-                  //Separador
+//Separador
+
                   SizedBox(
                     height: 10,
                   ),
