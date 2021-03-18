@@ -6,6 +6,10 @@ class ControleCidade {
   CidadeDAO _dao = CidadeDAO();
 
   Future<List<Cidade>> listar(int idEstado) async {
+    if (idEstado == null || idEstado == 0) {
+      //retorna a lista futura vazia
+      return Future.value(new List<Cidade>());
+    }
     return _dao.pesquisarPorIDdoEstado(idEstado);
   }
 }

@@ -286,7 +286,7 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
                               //ja lista
                               .toList(),
                           //recebe o objeto
-                          value: _controle.produtorEmEdicao.cidade.estado,
+                          value: _controle.estadoSelecionado,
                           //validação do campo:
                           validator: (value) {
                             if (value == null) {
@@ -297,7 +297,7 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
                           //ao seleciona ja refelete no objeto
                           onChanged: (Estado value) {
                             setState(() {
-                              _controle.produtorEmEdicao.cidade.estado = value;
+                              _controle.estadoSelecionado = value;
                             });
                           },
                         );
@@ -309,9 +309,11 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
                   //Combo Cidades -----------------------------------------------------
                   FutureBuilder(
                       //pegar o estado selecionado
-                      // future: _controleCidade
-                      //     .listar(_controle.produtorEmEdicao.cidade.estado.id),
-                      future: _controleCidade.listar(16),
+                      future: _controleCidade.listar(
+                          _controle.estadoSelecionado == null
+                              ? 0
+                              : _controle.estadoSelecionado.id),
+                      //future: _controleCidade.listar(16),
                       builder:
                           (BuildContext context, AsyncSnapshot<List> snapshot) {
                         String labelCampo = "Cidade";
@@ -335,7 +337,6 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
                           isExpanded: true,
                           //lista de objetos:
                           items: listaCidades
-                              //mapeia a lista de objetos semelhante ao foreach
                               .map<DropdownMenuItem<Cidade>>(
                                   (Cidade cidade) => DropdownMenuItem<Cidade>(
                                         value: cidade,

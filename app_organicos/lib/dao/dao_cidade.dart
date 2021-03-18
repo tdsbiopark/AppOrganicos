@@ -39,7 +39,7 @@ class CidadeDAO {
     List<
         Map<String,
             Map<String, dynamic>>> results = await conexao.mappedResultsQuery(
-        """SELECT id, nome, estado_id from cidade where estado_id = @idEstado limit 50 """,
+        """SELECT id, nome, estado_id from cidade where estado_id = @idEstado """,
         //Aplica uma filtro na consulta:
         substitutionValues: {"idEstado": idEstado});
 
