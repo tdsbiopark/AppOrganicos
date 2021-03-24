@@ -3,6 +3,7 @@ import 'package:app_organicos/modelo/estado.dart';
 class Cidade {
   int id;
   String nome;
+<<<<<<< HEAD
   Estado estado = Estado();
 
   //para poder percorrer na combobox na tela de cadastro
@@ -10,4 +11,7 @@ class Cidade {
   bool operator ==(other) {
     return (other is Cidade && other.id == this.id);
   }
+=======
+  Estado estado;
+>>>>>>> DevelopJonas
 }
