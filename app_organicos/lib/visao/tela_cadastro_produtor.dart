@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import 'package:app_organicos/controle/controle_cidade.dart';
 import 'package:app_organicos/controle/controle_estado.dart';
 import 'package:app_organicos/controle/controle_produtor.dart';
@@ -8,12 +7,6 @@ import 'package:flutter/material.dart';
 
 import '../modelo/cidade.dart';
 
-=======
-import 'package:app_organicos/controle/controle_produtor.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
->>>>>>> DevelopJonas
 class TelaCadastroProdutor extends StatefulWidget {
   //Controle do produto:
   ControleProdutor _controle;
@@ -35,16 +28,13 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
   //Instancia o controlador:
   ControleProdutor _controle;
 
-<<<<<<< HEAD
   //Instancia o controle Estado:
   ControleEstado _controleEstado = ControleEstado();
 
   //Instancia o controle da Cidade:
   ControleCidade _controleCidade = ControleCidade();
-=======
   //Instancia o controle da Cidade:
   //ControleCidade _controleCidade = Controlecidade();
->>>>>>> DevelopJonas
 
   //Instancia o controle do Grupo:
   //ControleGrupo _controleGrupo = ControleGrupo();
@@ -255,7 +245,6 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
                         }
                         return null;
                       }),
-<<<<<<< HEAD
 
                   //Separador
                   SizedBox(
@@ -315,13 +304,10 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
                           },
                         );
                       }),
-=======
->>>>>>> DevelopJonas
                   //Separador
                   SizedBox(
                     height: 10,
                   ),
-<<<<<<< HEAD
                   //Combo Cidades -----------------------------------------------------
                   FutureBuilder(
                       //pegar o estado selecionado
@@ -382,13 +368,6 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
                         );
                       }),
 
-=======
-
-                  //Cidade...
-                  //
-                  //
-                  //
->>>>>>> DevelopJonas
                   //Separador
                   SizedBox(
                     height: 10,
