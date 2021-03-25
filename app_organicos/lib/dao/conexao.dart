@@ -5,12 +5,10 @@ class Conexao {
 
   static Future<PostgreSQLConnection> getConexao() async {
     if (_conexaoPostgreSQL == null || _conexaoPostgreSQL.isClosed) {
-      _conexaoPostgreSQL = new PostgreSQLConnection("10.0.0.123", 5432, "organicos",
-          username: "postgres", password: "postgres");
+      _conexaoPostgreSQL = new PostgreSQLConnection(
+          "192.168.0.105", 5432, "organicos",
+          username: "postgres", password: "Alan@camila01");
       await _conexaoPostgreSQL.open();
-      await _conexaoPostgreSQL.execute("set tcp_keepalives_idle = 30;");
-      await _conexaoPostgreSQL.execute("set tcp_keepalives_interval = 15;");
-      await _conexaoPostgreSQL.execute("set tcp_keepalives_count = 10;");
     }
     return _conexaoPostgreSQL;
   }
