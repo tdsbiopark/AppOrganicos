@@ -14,8 +14,8 @@ class Produtor {
   String bairro;
   Cidade cidade;
   String telefone;
-  double latitude;
-  double longitude;
+  String latitude;
+  String longitude;
   String certificacaoOrganicos;
   bool vendaConsumidorFinal;
   bool ativo = true;

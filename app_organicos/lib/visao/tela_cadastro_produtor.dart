@@ -62,7 +62,8 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
       //faça o fechamento da tela
       _controle.gravarProdutorEmEdicao().then((value) {
         //e o metodo for diferente de null executa o metodo
-        if (_onFinishedInsert != null) _onFinishedInsert();
+        if (_onFinishedInsert != null)
+          _onFinishedInsert(); //ao finalizar fecha a tela
         //Pop - tira a tela da pilha
         Navigator.of(context).pop();
       });
@@ -90,9 +91,9 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
         body: Padding(
             padding: EdgeInsets.all(15),
             child: Form(
-              //referncia:
+              //referencia:
               key: _chaveFormulario,
-              //A lista vice é melhot que a Collumn, pos permite rolar a tela
+              //A lista é melhor que a Collumn, pos permite rolar a tela
               //o Formne cabe na tela,Não estoura a tela
               child: ListView(
                 children: <Widget>[
@@ -162,7 +163,7 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
                           // prefixIcon: Icon(Icons.person),
                           hintText: "CPF/CNPJ",
                           labelText: "CPF/CNPJ"),
-                      keyboardType: TextInputType.text,
+                      keyboardType: TextInputType.number,
                       initialValue: _controle.produtorEmEdicao.cpfCnpj,
                       onSaved: (String value) {
                         _controle.produtorEmEdicao.cpfCnpj = value;
@@ -210,7 +211,7 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
                           // prefixIcon: Icon(Icons.person),
                           hintText: "Numero",
                           labelText: "Numero"),
-                      keyboardType: TextInputType.text,
+                      keyboardType: TextInputType.number,
                       initialValue: _controle.produtorEmEdicao.numero,
                       onSaved: (String value) {
                         _controle.produtorEmEdicao.numero = value;
@@ -261,7 +262,7 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
                         if (!snapshot.hasData) {
                           labelCampo = "Carregando Lista de estados...";
                         }
-                        //recebe a lista vinda do banco: lista vazi ou lista cheia
+                        //recebe a lista vinda do banco: lista vazia ou lista cheia
                         List<Estado> listaEstados =
                             snapshot.data == null ? List() : snapshot.data;
                         //
@@ -281,7 +282,7 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
                               .map<DropdownMenuItem<Estado>>(
                                   (Estado estado) => DropdownMenuItem<Estado>(
                                         value: estado,
-                                        //texto que vai aparcer
+                                        //texto que vai aparecer
                                         child: Text(estado.nome,
                                             textAlign: TextAlign.left),
                                       ))
@@ -381,7 +382,7 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
                           // prefixIcon: Icon(Icons.person),
                           hintText: "Telefone",
                           labelText: "Telefone"),
-                      keyboardType: TextInputType.text,
+                      keyboardType: TextInputType.number,
                       initialValue: _controle.produtorEmEdicao.telefone,
                       onSaved: (String value) {
                         _controle.produtorEmEdicao.telefone = value;
