@@ -115,39 +115,21 @@ class ProdutorDao {
     //Faz a consulta
     List<Map<String, Map<String, dynamic>>> results =
         await conexao.mappedResultsQuery("""
-              SELECT 
-              id, 
-              certificadora_id, 
-              grupo_id, 
-              nome, 
-              nome_propriedade, 
-              cpf_cnpj, 
-              endereco, 
-              numero, 
-              bairro, 
-              cidade_id, 
-              telefone, 
-              latitude, 
-              longitude, 
-              certificacao_organicos, 
-              venda_consumidorfinal, 
-              registro_ativo 
-              FROM 
-                PRODUTOR
-              WHERE 
-                registro_ativo 
-              AND
-                LOWER(
-                  CONCAT(
-                      coalesce(nome,''),        
-                      coalesce(nome_propriedade,''),           
-                      coalesce(cpf_cnpj,''),               
-                      coalesce(endereco,''),         
-                      coalesce(bairro,'')
-                  )
-                )
-              LIKE @filtro
-              LIMIT 50""",
+          SELECT id, certificadora_id, grupo_id, nome, nome_propriedade, cpf_cnpj, endereco, numero,  
+          bairro, cidade_id, telefone, latitude, longitude, certificacao_organicos, venda_consumidorfinal, registro_ativo 
+          FROM PRODUTOR WHERE registro_ativo = true
+          AND
+            LOWER(
+              CONCAT(
+                  coalesce(nome,''),        
+                  coalesce(nome_propriedade,''),           
+                  coalesce(cpf_cnpj,''),               
+                  coalesce(endereco,''),         
+                  coalesce(bairro,'')
+              )
+            )
+          LIKE @filtro
+          LIMIT 50""",
             //Aplica uma filtro na consulta:
             substitutionValues: {"filtro": "%" + filtro.toLowerCase() + "%"});
 
@@ -159,12 +141,12 @@ class ProdutorDao {
         ..id = row["produtor"]["certificadora_id"];
       produtor.grupo = Grupo()..id = row["produtor"]["grupo_id"];
       produtor.nome = row["produtor"]["nome"];
-      produtor.nomePropriedade = row["produtor"]["nomePropriedade"];
-      produtor.cpfCnpj = row["produtor"]["cpfCnpj"];
+      produtor.nomePropriedade = row["produtor"]["nome_propriedade"];
+      produtor.cpfCnpj = row["produtor"]["cpf_cnpj"];
       produtor.endereco = row["produtor"]["endereco"];
       produtor.numero = row["produtor"]["numero"];
       produtor.bairro = row["produtor"]["bairro"];
-      produtor.cidade = Cidade()..id = row["produtor"]["cidade"];
+      produtor.cidade = Cidade()..id = row["produtor"]["cidade_id"];
       produtor.telefone = row["produtor"]["telefone"];
       produtor.latitude = row["produtor"]["latitude"];
       produtor.longitude = row["produtor"]["longitude"];
@@ -172,6 +154,8 @@ class ProdutorDao {
           row["produtor"]["certificacao_organicos"];
       produtor.vendaConsumidorFinal = row["produtor"]["venda_consumidorfinal"];
       produtor.ativo = row["produtor"]["registro_ativo"];
+      //add obj na lista:
+      produtores.add(produtor);
     }
     return produtores;
   }
