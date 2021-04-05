@@ -72,7 +72,7 @@ class ProdutorDao {
         grupo_id = @Grupo_id, 
         nome = @Nome, 
         nome_propriedade = @Nome_propriedade, 
-        cpf_cnpj = @Cpf_cnpj, 
+        cpf_cnpj = @cpf_cnpj, 
         endereco = @Endereco, 
         numero = @Numero, 
         bairro = @Bairro, 
@@ -137,16 +137,12 @@ class ProdutorDao {
     for (final row in results) {
       Produtor produtor = Produtor();
       produtor.id = row["produtor"]["id"];
-      produtor.certificadora = Certificadora()
-        ..id = row["produtor"]["certificadora_id"];
-      produtor.grupo = Grupo()..id = row["produtor"]["grupo_id"];
       produtor.nome = row["produtor"]["nome"];
       produtor.nomePropriedade = row["produtor"]["nome_propriedade"];
       produtor.cpfCnpj = row["produtor"]["cpf_cnpj"];
       produtor.endereco = row["produtor"]["endereco"];
       produtor.numero = row["produtor"]["numero"];
       produtor.bairro = row["produtor"]["bairro"];
-      produtor.cidade = Cidade()..id = row["produtor"]["cidade_id"];
       produtor.telefone = row["produtor"]["telefone"];
       produtor.latitude = row["produtor"]["latitude"];
       produtor.longitude = row["produtor"]["longitude"];
@@ -154,6 +150,10 @@ class ProdutorDao {
           row["produtor"]["certificacao_organicos"];
       produtor.vendaConsumidorFinal = row["produtor"]["venda_consumidorfinal"];
       produtor.ativo = row["produtor"]["registro_ativo"];
+      produtor.cidade = Cidade()..id = row["produtor"]["cidade_id"];
+      produtor.grupo = Grupo()..id = row["produtor"]["grupo_id"];
+      produtor.certificadora = Certificadora()
+        ..id = row["produtor"]["certificadora_id"];
       //add obj na lista:
       produtores.add(produtor);
     }

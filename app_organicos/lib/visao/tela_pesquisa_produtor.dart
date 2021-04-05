@@ -128,7 +128,7 @@ class _TelaPesquisaProdutorState extends State<TelaPesquisaProdutor> {
                     textAlign: TextAlign.left))),
         //lista de widgets - adicionado botoes
         secondaryActions: <Widget>[
-          //Btão Editar:
+          //Botão Editar:
           new IconSlideAction(
             caption: 'Editar',
             color: Colors.green,
@@ -142,7 +142,7 @@ class _TelaPesquisaProdutorState extends State<TelaPesquisaProdutor> {
                   _controle.atualizarPesquisa();
                 });
               };
-              //carrega a tela com om objeto vazio, campos limpos
+              //carrega a tela com um objeto vazio, campos limpos
               _controle.produtorEmEdicao = produtor;
               //Adiciona a nova tela na pilha, Carrega a tela de cadastro para cadastrar novo produtor
               Navigator.push(
@@ -220,8 +220,7 @@ class _TelaPesquisaProdutorState extends State<TelaPesquisaProdutor> {
     return Scaffold(
         //usa o metodo que retorna o widget appBar:
         appBar: buildBar(context),
-
-        //Borão + no canto inferior
+        //Botão + no canto inferior
         floatingActionButton: FloatingActionButton(
           //Icone:
           child: Icon(Icons.add),
@@ -229,8 +228,7 @@ class _TelaPesquisaProdutorState extends State<TelaPesquisaProdutor> {
           onPressed: () {
             //Recebe o produto sendo editado
             _controle.produtorEmEdicao = Produtor();
-
-            //Função responsavel por avisar a outra tele - depois te terminar de inserir
+            //Função responsavel por avisar a outra tela - depois te terminar de inserir
             Function onFinishedInsert = () {
               //Atualiza algo na tela
               setState(() {
@@ -255,7 +253,7 @@ class _TelaPesquisaProdutorState extends State<TelaPesquisaProdutor> {
         body: FutureBuilder(
             //lista futura de produtos: fica monitorando ela
             future: _controle.fProdutoresPesquisados,
-            //fica monstrado algo emquando a lista não foi carrgada
+            //fica monstrando algo emquando a lista não foi carregada
             builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
               //Retornou dados na lista?
               if (!snapshot.hasData)
@@ -266,7 +264,6 @@ class _TelaPesquisaProdutorState extends State<TelaPesquisaProdutor> {
                   "A consulta não retornou dados!",
                   style: TextStyle(fontSize: 20),
                 )));
-
               //Passa a lista para uma variavel
               _controle.produtoresPesquisados = snapshot.data;
               //Carregar a lista de objetos:

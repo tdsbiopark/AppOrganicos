@@ -1,6 +1,7 @@
 import 'package:app_organicos/modelo/cidade.dart';
 import 'package:app_organicos/modelo/estado.dart';
 import 'package:postgres/postgres.dart';
+import '../modelo/cidade.dart';
 import 'conexao.dart';
 
 class CidadeDAO {
@@ -8,6 +9,10 @@ class CidadeDAO {
   Future<List<Cidade>> pesquisar(String filtro) async {
     //Definir a conexão:
     PostgreSQLConnection conexao = await Conexao.getConexao();
+
+    //retorna uma lista: Flutter 2.0 - Cria a lista fazia
+    //Cidade cidade = new Cidade();
+
     //retorna uma lista: Flutter 2.0 - Cria a lista fazia
     List<Cidade> cidades = List.empty(growable: true);
     //Faz a consulta
