@@ -5,9 +5,9 @@ class Conexao {
 
   static Future<PostgreSQLConnection> getConexao() async {
     if (_conexaoPostgreSQL == null || _conexaoPostgreSQL.isClosed) {
-      _conexaoPostgreSQL = new PostgreSQLConnection(
-          "192.168.0.105", 5432, "organicos",
-          username: "postgres", password: "Alan@camila01");
+      _conexaoPostgreSQL = new PostgreSQLConnection(        
+          "192.168.0.120", 5432, "bdOrganicosApp",
+          username: "postgres", password: "12345678");
       await _conexaoPostgreSQL.open();
     }
     return _conexaoPostgreSQL;
