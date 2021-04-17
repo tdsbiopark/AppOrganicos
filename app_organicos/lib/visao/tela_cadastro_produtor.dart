@@ -33,8 +33,6 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
 
   //Instancia o controle da Cidade:
   ControleCidade _controleCidade = ControleCidade();
-  //Instancia o controle da Cidade:
-  //ControleCidade _controleCidade = Controlecidade();
 
   //Instancia o controle do Grupo:
   //ControleGrupo _controleGrupo = ControleGrupo();
@@ -47,6 +45,7 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
 
   //Refencia um widge , referencia , identifica, ponteiro para os widget
   var _chaveFormulario = GlobalKey<FormState>();
+
   //Construtor de estados da tela, recebe um controle e a função é executa apos terminar
   _TelaCadastroProdutorState(this._controle, this._onFinishedInsert);
 
@@ -87,7 +86,7 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
             _acaoBotaoSalvar(context);
           },
         ),
-        //Definir o corpo do formulario Reforna o form com os campos
+        //Definir o corpo do formulario Retorna o form com os campos
         body: Padding(
             padding: EdgeInsets.all(15),
             child: Form(
