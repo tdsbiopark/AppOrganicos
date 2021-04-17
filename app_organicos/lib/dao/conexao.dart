@@ -6,7 +6,7 @@ class Conexao {
   static Future<PostgreSQLConnection> getConexao() async {
     if (_conexaoPostgreSQL == null || _conexaoPostgreSQL.isClosed) {
       _conexaoPostgreSQL = new PostgreSQLConnection(
-          "192.168.1.106", 5433, "organicos",
+          "192.168.1.104", 5433, "organicos",
           username: "postgres", password: "postgres");
       await _conexaoPostgreSQL.open();
       await _conexaoPostgreSQL.execute("set tcp_keepalives_idle = 30;");

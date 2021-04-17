@@ -8,7 +8,7 @@ class Grupo {
   String bairro;
   Cidade cidade;
   String cnpj;
-  String incricaoEstadual;
-  String distribuidor;
+  String inscricaoEstadual;
+  bool distribuidor;
   bool ativo = true;
 }

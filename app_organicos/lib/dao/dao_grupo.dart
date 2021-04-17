@@ -40,7 +40,7 @@ class GrupoDao {
           "bairro": grupo.bairro,
           "cidade_id": grupo.cidade.id,
           "cnpj": grupo.cnpj,
-          "inscricao_estadual": grupo.incricaoEstadual,
+          "inscricao_estadual": grupo.inscricaoEstadual,
           "distribuidor_produtos": grupo.distribuidor,
           "registro_ativo": grupo.ativo,
         });
@@ -62,7 +62,7 @@ class GrupoDao {
           "bairro": grupo.bairro,
           "cidade_id": grupo.cidade.id,
           "cnpj": grupo.cnpj,
-          "inscricao_estadual": grupo.incricaoEstadual,
+          "inscricao_estadual": grupo.inscricaoEstadual,
           "distribuidor_produtos": grupo.distribuidor,
           "registro_ativo": grupo.ativo,
         });
@@ -95,7 +95,7 @@ class GrupoDao {
       grupo.bairro = row["Grupo"]["bairro"];
       grupo.cidade.id = row["Grupo"]["cidade_id"];
       grupo.cnpj = row["Grupo"]["cnpj"];
-      grupo.incricaoEstadual = row["Grupo"]["inscricao_estadual"];
+      grupo.inscricaoEstadual = row["Grupo"]["inscricao_estadual"];
       grupo.distribuidor = row["Grupo"]["distribuidor_produtos"];
       grupo.ativo = row["Grupo"]["ativo"];
       //add obj na lista:
