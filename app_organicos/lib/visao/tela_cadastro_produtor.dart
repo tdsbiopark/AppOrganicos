@@ -262,10 +262,9 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
                         if (!snapshot.hasData) {
                           labelCampo = "Carregando Lista de estados...";
                         }
-                        //recebe a lista vinda do banco: lista vazia ou lista cheia
+                        //recebe a lista vinda do banco: se null lista vazia ou lista cheia
                         List<Estado> listaEstados =
                             snapshot.data == null ? List() : snapshot.data;
-                        //
                         return DropdownButtonFormField(
                           decoration: InputDecoration(
                               border: OutlineInputBorder(
