@@ -49,7 +49,6 @@ class ProdutorDao {
             @certificacao_organicos, 
             @venda_consumidorfinal, 
             @registro_ativo)""", substitutionValues: {
-          "id": produtor.id,
           "certificadora_id": produtor.certificadora.id,
           "grupo_id": produtor.grupo.id,
           "nome": produtor.nome,

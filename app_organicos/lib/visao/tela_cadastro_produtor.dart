@@ -152,7 +152,6 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
                   SizedBox(
                     height: 10,
                   ),
-
                   //Campo CNP CPF:
                   TextFormField(
                       decoration: const InputDecoration(
@@ -245,7 +244,6 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
                         }
                         return null;
                       }),
-
                   //Separador
                   SizedBox(
                     height: 10,
