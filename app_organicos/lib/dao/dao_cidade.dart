@@ -34,6 +34,32 @@ class CidadeDAO {
     return cidades;
   }
 
+  // //Retorna uma lista futura: Recebe um id do estado
+  // Future<List<Cidade>> pesquisarPorIDdoEstado(int idEstado) async {
+  //   //Definir a conexão:
+  //   PostgreSQLConnection conexao = await Conexao.getConexao();
+  //   //retorna uma lista: Flutter 2.0 - Cria a lista fazia
+  //   List<Cidade> cidades = List.empty(growable: true);
+  //   //Faz a consulta
+  //   List<
+  //       Map<String,
+  //           Map<String, dynamic>>> results = await conexao.mappedResultsQuery(
+  //       """SELECT id, nome, estado_id from cidade where estado_id = @idEstado """,
+  //       //Aplica uma filtro na consulta:
+  //       substitutionValues: {"idEstado": idEstado});
+
+  //   //Preenche a lista:
+  //   for (final row in results) {
+  //     Cidade cidade = Cidade();
+  //     cidade.id = row["cidade"]["id"];
+  //     //Relacionamento FK : os dois pontos retorna o objeto e com o ID retornado
+  //     cidade.estado = Estado()..id = row["cidade"]["estado_id"];
+  //     cidade.nome = row["cidade"]["nome"];
+  //     cidades.add(cidade);
+  //   }
+  //   return cidades;
+  // }
+
   //Retorna uma lista futura: Recebe um id do estado
   Future<List<Cidade>> pesquisarPorIDdoEstado(int idEstado) async {
     //Definir a conexão:
@@ -41,20 +67,29 @@ class CidadeDAO {
     //retorna uma lista: Flutter 2.0 - Cria a lista fazia
     List<Cidade> cidades = List.empty(growable: true);
     //Faz a consulta
-    List<
-        Map<String,
-            Map<String, dynamic>>> results = await conexao.mappedResultsQuery(
-        """SELECT id, nome, estado_id from cidade where estado_id = @idEstado """,
-        //Aplica uma filtro na consulta:
-        substitutionValues: {"idEstado": idEstado});
+    List<Map<String, Map<String, dynamic>>> results =
+        await conexao.mappedResultsQuery("""SELECT 
+        cd.id as idCidade, 
+        cd.nome as nomeCidade,
+        cd.estado_id as idEstado,
+        uf.nome as nomeEstado, 
+        uf.sigla as siglaEstado 
+        FROM cidade as cd
+        LEFT JOIN estado as uf
+        ON cd.estado_id = uf.id 
+        WHERE cd.estado_id = @idEstado """,
+            //Aplica uma filtro na consulta:
+            substitutionValues: {"idEstado": idEstado});
 
     //Preenche a lista:
     for (final row in results) {
       Cidade cidade = Cidade();
-      cidade.id = row["cidade"]["id"];
+      cidade.id = row["cidade"]["idCidade"];
+      cidade.nome = row["cidade"]["nomeCidade"];
       //Relacionamento FK : os dois pontos retorna o objeto e com o ID retornado
-      cidade.estado = Estado()..id = row["cidade"]["estado_id"];
-      cidade.nome = row["cidade"]["nome"];
+      cidade.estado = Estado()..id = row["cidade"]["idEstado"];
+      cidade.estado.nome = row["estado"]["nomeEstado"];
+      cidade.estado.sigla = row["estado"]["siglaEstado"];
       cidades.add(cidade);
     }
     return cidades;

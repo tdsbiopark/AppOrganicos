@@ -13,6 +13,10 @@ class ControleProdutor {
   //Pega o estado no combo;
   Estado estadoSelecionado;
 
+  Future<void> SetEstado() {
+    if (produtorEmEdicao.cidade != null) {}
+  }
+
   //Lista Futura:guarda o que vem do banco
   Future<List<Produtor>> fProdutoresPesquisados;
   //Lista para uso em tela ()Biding, reflete a pesquisa

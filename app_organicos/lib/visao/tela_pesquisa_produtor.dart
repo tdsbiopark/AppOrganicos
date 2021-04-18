@@ -144,6 +144,10 @@ class _TelaPesquisaProdutorState extends State<TelaPesquisaProdutor> {
               };
               //carrega a tela com um objeto vazio, campos limpos
               _controle.produtorEmEdicao = produtor;
+              //Falta definir o id do estado com base na cidade para Editar?
+              //
+              //
+              //
               //Adiciona a nova tela na pilha, Carrega a tela de cadastro para cadastrar novo produtor
               Navigator.push(
                 context,

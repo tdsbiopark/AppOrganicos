@@ -3,7 +3,7 @@ import 'package:postgres/postgres.dart';
 import 'conexao.dart';
 
 class EstadoDAO {
-  //Retorna uma lista futura: Recebe um texto para pesquisar
+  //Retorna uma lista futura:
   Future<List<Estado>> listar() async {
     //Definir a conexão:
     PostgreSQLConnection conexao = await Conexao.getConexao();
