@@ -20,8 +20,8 @@ class Produtor {
   bool vendaConsumidorFinal;
   bool ativo = true;
   Cidade cidade;
-  Certificadora certificadora = new Certificadora();
-  Grupo grupo = new Grupo();
+  Certificadora certificadora;
+  Grupo grupo;
   List<Produto> produtos = new List<Produto>();
 
   //Teste para gravar sem implementar grupo e certificadora
