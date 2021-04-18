@@ -1,7 +1,5 @@
 import 'package:app_organicos/dao/dao_produtor.dart';
-import 'package:app_organicos/modelo/certificadora.dart';
 import 'package:app_organicos/modelo/estado.dart';
-import 'package:app_organicos/modelo/grupo.dart';
 import 'package:app_organicos/modelo/produtor.dart';
 
 class ControleProdutor {
