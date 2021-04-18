@@ -14,4 +14,8 @@ class ControleCertificadora {
   Future<void> atualizarPesquisa({String filtro = ""}) {
     fCertificadorasPesquisadas = _dao.pesquisar(filtro);
   }
+
+  Future<List<Certificadora>> listar() async {
+    return _dao.pesquisar("");
+  }
 }

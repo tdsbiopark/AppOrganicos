@@ -34,22 +34,21 @@ class ProdutorDao {
           venda_consumidorfinal, 
           registro_ativo) 
           VALUES (
-            @Certificadora_id, 
-            @Grupo_id, 
-            @Nome, 
-            @Nome_propriedade, 
-            @Cpf_cnpj, 
-            @Endereco, 
-            @Numero, 
-            @Bairro, 
-            @Cidade_id, 
-            @Telefone, 
-            @Latitude, 
-            @Longitude, 
-            @Certificacao_organicos, 
-            @Venda_consumidorfinal, 
-            @Registro_ativo)""", substitutionValues: {
-          "id": produtor.id,
+            @certificadora_id, 
+            @grupo_id, 
+            @nome, 
+            @nome_propriedade, 
+            @cpf_cnpj, 
+            @endereco, 
+            @numero, 
+            @bairro, 
+            @cidade_id, 
+            @telefone, 
+            @latitude, 
+            @longitude, 
+            @certificacao_organicos, 
+            @venda_consumidorfinal, 
+            @registro_ativo)""", substitutionValues: {
           "certificadora_id": produtor.certificadora.id,
           "grupo_id": produtor.grupo.id,
           "nome": produtor.nome,
@@ -68,22 +67,22 @@ class ProdutorDao {
         });
       } else {
         await contexto.query("""UPDATE PRODUTOR SET 
-        certificadora_id = @Certificadora_id, 
-        grupo_id = @Grupo_id, 
-        nome = @Nome, 
-        nome_propriedade = @Nome_propriedade, 
-        cpf_cnpj = @Cpf_cnpj, 
-        endereco = @Endereco, 
-        numero = @Numero, 
-        bairro = @Bairro, 
-        cidade_id = @Cidade_id, 
-        telefone = @Telefone, 
-        latitude = @Latitude, 
-        longitude = @Longitude, 
-        certificacao_organicos = @Certificacao_organicos, 
-        venda_consumidorfinal = @Venda_consumidorfinal, 
-        registro_ativo = @Registro_ativo
-          WHERE id = @Id""", substitutionValues: {
+        certificadora_id = @certificadora_id, 
+        grupo_id = @grupo_id, 
+        nome = @nome, 
+        nome_propriedade = @nome_propriedade, 
+        cpf_cnpj = @cpf_cnpj, 
+        endereco = @endereco, 
+        numero = @numero, 
+        bairro = @bairro, 
+        cidade_id = @cidade_id, 
+        telefone = @telefone, 
+        latitude = @latitude, 
+        longitude = @longitude, 
+        certificacao_organicos = @certificacao_organicos, 
+        venda_consumidorfinal = @venda_consumidorfinal, 
+        registro_ativo = @registro_ativo
+          WHERE id = @id""", substitutionValues: {
           "id": produtor.id,
           "certificadora_id": produtor.certificadora.id,
           "grupo_id": produtor.grupo.id,
@@ -137,16 +136,12 @@ class ProdutorDao {
     for (final row in results) {
       Produtor produtor = Produtor();
       produtor.id = row["produtor"]["id"];
-      produtor.certificadora = Certificadora()
-        ..id = row["produtor"]["certificadora_id"];
-      produtor.grupo = Grupo()..id = row["produtor"]["grupo_id"];
       produtor.nome = row["produtor"]["nome"];
       produtor.nomePropriedade = row["produtor"]["nome_propriedade"];
       produtor.cpfCnpj = row["produtor"]["cpf_cnpj"];
       produtor.endereco = row["produtor"]["endereco"];
       produtor.numero = row["produtor"]["numero"];
       produtor.bairro = row["produtor"]["bairro"];
-      produtor.cidade = Cidade()..id = row["produtor"]["cidade_id"];
       produtor.telefone = row["produtor"]["telefone"];
       produtor.latitude = row["produtor"]["latitude"];
       produtor.longitude = row["produtor"]["longitude"];
@@ -154,6 +149,10 @@ class ProdutorDao {
           row["produtor"]["certificacao_organicos"];
       produtor.vendaConsumidorFinal = row["produtor"]["venda_consumidorfinal"];
       produtor.ativo = row["produtor"]["registro_ativo"];
+      produtor.cidade = Cidade()..id = row["produtor"]["cidade_id"];
+      produtor.grupo = Grupo()..id = row["produtor"]["grupo_id"];
+      produtor.certificadora = Certificadora()
+        ..id = row["produtor"]["certificadora_id"];
       //add obj na lista:
       produtores.add(produtor);
     }
