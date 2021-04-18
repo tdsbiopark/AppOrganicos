@@ -17,4 +17,8 @@ class ControleGrupo {
   Future<void> atualizarPesquisa({String filtro = ""}) {
     fGruposPesquisados = _dao.pesquisar(filtro);
   }
+
+  Future<List<Grupo>> listar() async {
+    return _dao.pesquisar("");
+  }
 }
