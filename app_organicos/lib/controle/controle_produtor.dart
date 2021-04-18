@@ -1,3 +1,4 @@
+import 'package:app_organicos/dao/dao_cidade.dart';
 import 'package:app_organicos/dao/dao_produtor.dart';
 import 'package:app_organicos/modelo/estado.dart';
 import 'package:app_organicos/modelo/produtor.dart';
@@ -5,6 +6,10 @@ import 'package:app_organicos/modelo/produtor.dart';
 class ControleProdutor {
   //DAO:
   ProdutorDao _dao = ProdutorDao();
+
+  //Dao Cidade
+  CidadeDAO _daoCid = CidadeDAO();
+
   //Obj
   Produtor produtorEmEdicao = Produtor();
 
@@ -24,5 +29,13 @@ class ControleProdutor {
   //Metodo assincrono para pesquisar: opcional recebe um txt para pesquisa
   Future<void> atualizarPesquisa({String filtro = ""}) {
     fProdutoresPesquisados = _dao.pesquisar(filtro);
+  }
+
+  //Definir o estado com base na cidade selecionada:
+  void setEstadoSelecionado() {
+    if (produtorEmEdicao.cidade != null) {
+      _daoCid.getIdEstado(produtorEmEdicao.cidade);
+      estadoSelecionado = produtorEmEdicao.cidade.estado;
+    }
   }
 }

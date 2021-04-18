@@ -1,5 +1,6 @@
 import 'package:app_organicos/modelo/cidade.dart';
 import 'package:app_organicos/modelo/estado.dart';
+import 'package:flutter/animation.dart';
 import 'package:postgres/postgres.dart';
 import '../modelo/cidade.dart';
 import 'conexao.dart';
@@ -58,5 +59,16 @@ class CidadeDAO {
       cidades.add(cidade);
     }
     return cidades;
+  }
+
+  void getIdEstado(Cidade cidade) async {
+    //Definir a conexão:
+    PostgreSQLConnection conexao = await Conexao.getConexao();
+    Estado estado = new Estado();
+    estado.id = await conexao.execute(
+        """SELECT estado_id from cidade where Cidade.id = @idCidade """,
+        //Aplica uma filtro na consulta:
+        substitutionValues: {"idCidade": cidade.id});
+    cidade.estado = estado;
   }
 }
