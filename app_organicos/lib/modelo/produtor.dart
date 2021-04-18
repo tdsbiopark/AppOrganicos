@@ -17,7 +17,7 @@ class Produtor {
   String latitude;
   String longitude;
   String certificacaoOrganicos;
-  bool vendaConsumidorFinal;
+  bool vendaConsumidorFinal = true;
   bool ativo = true;
   Cidade cidade;
   Certificadora certificadora;

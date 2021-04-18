@@ -112,7 +112,7 @@ class _TelaPesquisaProdutorState extends State<TelaPesquisaProdutor> {
                 color: indice % 2 == 0 ? Colors.blue.shade50 : Colors.white),
             //linha de uma lista:
             child: ListTile(
-                //texto da linha
+                //texto da linha - Falta tratamento de exceção caso campo nome for null
                 title: new Text("Nome: " + produtor.nome,
                     style: TextStyle(
                         color: Colors.black,
