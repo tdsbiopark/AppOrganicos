@@ -1,3 +1,4 @@
+import 'package:app_organicos/modelo/cidade.dart';
 import 'package:app_organicos/modelo/grupo.dart';
 
 import 'package:postgres/postgres.dart';
@@ -81,23 +82,23 @@ class GrupoDao {
     List<
         Map<String,
             Map<String, dynamic>>> results = await conexao.mappedResultsQuery(
-        """SELECT id, nome, endereco, numero, bairro, cidade_id, cnpj, inscricao_estadual, distribuidor_produtos, registro_ativo from Grupo where registro_ativo = true and lower(nome) like @filtro limit 50""",
+        """SELECT id, nome, endereco, numero, bairro, cidade_id, cnpj, inscricao_estadual, distribuidor_produtos, registro_ativo from grupo where registro_ativo = true and lower(nome) like @filtro limit 50""",
         //Aplica uma filtro na consulta:
         substitutionValues: {"filtro": "%" + filtro.toLowerCase() + "%"});
 
     //Preenche a lista de produtos:
     for (final row in results) {
       Grupo grupo = Grupo();
-      grupo.id = row["Grupo"]["id"];
-      grupo.nome = row["Grupo"]["nome"];
-      grupo.endereco = row["Grupo"]["endereco"];
-      grupo.numero = row["Grupo"]["numero"];
-      grupo.bairro = row["Grupo"]["bairro"];
-      grupo.cidade.id = row["Grupo"]["cidade_id"];
-      grupo.cnpj = row["Grupo"]["cnpj"];
-      grupo.incricaoEstadual = row["Grupo"]["inscricao_estadual"];
-      grupo.distribuidor = row["Grupo"]["distribuidor_produtos"];
-      grupo.ativo = row["Grupo"]["ativo"];
+      grupo.id = row["grupo"]["id"];
+      grupo.nome = row["grupo"]["nome"];
+      grupo.endereco = row["grupo"]["endereco"];
+      grupo.numero = row["grupo"]["numero"];
+      grupo.bairro = row["grupo"]["bairro"];
+      grupo.cidade = Cidade()..id = row["grupo"]["cidade_id"];
+      grupo.cnpj = row["grupo"]["cnpj"];
+      grupo.incricaoEstadual = row["grupo"]["inscricao_estadual"];
+      grupo.distribuidor = row["grupo"]["distribuidor_produtos"];
+      grupo.ativo = row["grupo"]["ativo"];
       //add obj na lista:
       grupos.add(grupo);
     }

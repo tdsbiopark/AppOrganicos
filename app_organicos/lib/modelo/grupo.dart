@@ -4,12 +4,12 @@ class Grupo {
   int id;
   String nome;
   String endereco;
-  String numero;
+  int numero;
   String bairro;
   Cidade cidade;
   String cnpj;
   String incricaoEstadual;
-  String distribuidor;
+  bool distribuidor;
   bool ativo = true;
 
   //para poder percorrer na combobox na tela de cadastro
