@@ -1,3 +1,5 @@
+import 'package:app_organicos/visao/tela_cadastro_grupo.dart';
+import 'package:app_organicos/visao/tela_pesquisa_grupo.dart';
 import 'package:app_organicos/visao/tela_pesquisa_produto.dart';
 import 'package:app_organicos/visao/tela_pesquisa_produtor.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +19,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: TelaPesquisaProdutor(),
+
+      home: TelaPesquisaGrupo(),
+      //home: TelaPesquisaProdutor(),
       //home: TelaPesquisaProduto(),
     );
   }

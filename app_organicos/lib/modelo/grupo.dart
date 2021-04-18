@@ -8,7 +8,11 @@ class Grupo {
   String bairro;
   Cidade cidade;
   String cnpj;
+<<<<<<< HEAD
   String incricaoEstadual;
+=======
+  String inscricaoEstadual;
+>>>>>>> DevelopMaycon
   bool distribuidor;
   bool ativo = true;
 

@@ -41,7 +41,7 @@ class GrupoDao {
           "bairro": grupo.bairro,
           "cidade_id": grupo.cidade.id,
           "cnpj": grupo.cnpj,
-          "inscricao_estadual": grupo.incricaoEstadual,
+          "inscricao_estadual": grupo.inscricaoEstadual,
           "distribuidor_produtos": grupo.distribuidor,
           "registro_ativo": grupo.ativo,
         });
@@ -63,7 +63,7 @@ class GrupoDao {
           "bairro": grupo.bairro,
           "cidade_id": grupo.cidade.id,
           "cnpj": grupo.cnpj,
-          "inscricao_estadual": grupo.incricaoEstadual,
+          "inscricao_estadual": grupo.inscricaoEstadual,
           "distribuidor_produtos": grupo.distribuidor,
           "registro_ativo": grupo.ativo,
         });
@@ -89,6 +89,7 @@ class GrupoDao {
     //Preenche a lista de produtos:
     for (final row in results) {
       Grupo grupo = Grupo();
+<<<<<<< HEAD
       grupo.id = row["grupo"]["id"];
       grupo.nome = row["grupo"]["nome"];
       grupo.endereco = row["grupo"]["endereco"];
@@ -99,6 +100,18 @@ class GrupoDao {
       grupo.incricaoEstadual = row["grupo"]["inscricao_estadual"];
       grupo.distribuidor = row["grupo"]["distribuidor_produtos"];
       grupo.ativo = row["grupo"]["ativo"];
+=======
+      grupo.id = row["Grupo"]["id"];
+      grupo.nome = row["Grupo"]["nome"];
+      grupo.endereco = row["Grupo"]["endereco"];
+      grupo.numero = row["Grupo"]["numero"];
+      grupo.bairro = row["Grupo"]["bairro"];
+      grupo.cidade.id = row["Grupo"]["cidade_id"];
+      grupo.cnpj = row["Grupo"]["cnpj"];
+      grupo.inscricaoEstadual = row["Grupo"]["inscricao_estadual"];
+      grupo.distribuidor = row["Grupo"]["distribuidor_produtos"];
+      grupo.ativo = row["Grupo"]["ativo"];
+>>>>>>> DevelopMaycon
       //add obj na lista:
       grupos.add(grupo);
     }
