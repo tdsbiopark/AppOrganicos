@@ -1,5 +1,7 @@
 import 'package:app_organicos/dao/dao_produtor.dart';
+import 'package:app_organicos/modelo/certificadora.dart';
 import 'package:app_organicos/modelo/estado.dart';
+import 'package:app_organicos/modelo/grupo.dart';
 import 'package:app_organicos/modelo/produtor.dart';
 
 class ControleProdutor {
@@ -10,6 +12,12 @@ class ControleProdutor {
 
   //Pega o estado no combo;
   Estado estadoSelecionado;
+
+  //Pega a certificadora no combo;
+  Certificadora certificadoraSelecionada;
+
+  //Pega a certificadora no combo;
+  Grupo grupoSelecionada;
 
   //Lista Futura:guarda o que vem do banco
   Future<List<Produtor>> fProdutoresPesquisados;

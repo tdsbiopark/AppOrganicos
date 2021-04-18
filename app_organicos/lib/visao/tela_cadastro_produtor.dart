@@ -1,6 +1,8 @@
+import 'package:app_organicos/controle/controle_certificadora.dart';
 import 'package:app_organicos/controle/controle_cidade.dart';
 import 'package:app_organicos/controle/controle_estado.dart';
 import 'package:app_organicos/controle/controle_produtor.dart';
+import 'package:app_organicos/modelo/certificadora.dart';
 import 'package:app_organicos/modelo/estado.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +40,7 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
   //ControleGrupo _controleGrupo = ControleGrupo();
 
   //Instancia o controle do Certificadora:
-  //ControleCertificadora _controleCertificadora = ControleCertificadora();
+  ControleCertificadora _controleCertificadora = ControleCertificadora();
 
   //funcao:é executa apos terminar o processo de insert
   Function _onFinishedInsert;
@@ -401,11 +403,62 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
                   SizedBox(
                     height: 10,
                   ),
-                  //Certificadora...
-                  //
-                  //
-                  //
-                  //Separador
+
+                  FutureBuilder(
+                      future: _controleCertificadora.listar(),
+                      builder:
+                          (BuildContext context, AsyncSnapshot<List> snapshot) {
+                        String labelCampo = "Certificadora";
+                        //Se nao tem dados...
+                        if (!snapshot.hasData) {
+                          labelCampo = "Carregando Lista de Certificadoras...";
+                        }
+                        //recebe a lista vinda do banco: lista vazi ou lista cheia
+                        List<Certificadora> listaTipos =
+                            snapshot.data == null ? List() : snapshot.data;
+                        return DropdownButtonFormField(
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.teal)),
+                              filled: true,
+                              isDense: true,
+                              prefixIcon: Icon(Icons.assignment_ind),
+                              hintText: labelCampo,
+                              labelText: labelCampo),
+                          isExpanded: true,
+                          //lista de objetos:
+                          items: listaTipos
+                              //mapeia a lista de objetos semelhante ao foreach
+                              .map<DropdownMenuItem<Certificadora>>(
+                                  (Certificadora tipo) =>
+                                      DropdownMenuItem<Certificadora>(
+                                        value: tipo,
+                                        //texto que vai aparcer
+                                        child: Text(tipo.nome,
+                                            textAlign: TextAlign.left),
+                                      ))
+                              //ja lista
+                              .toList(),
+
+                          //recebe o objeto
+                          value: _controle.certificadoraSelecionada,
+
+                          //validação do campo:
+                          validator: (value) {
+                            if (value == null) {
+                              return "Selecione a certificadora!";
+                            }
+                            return null;
+                          },
+
+                          //ao seleciona ja refelete no objeto
+                          onChanged: (Certificadora value) {
+                            setState(() {
+                              _controle.certificadoraSelecionada = value;
+                            });
+                          },
+                        );
+                      }),
                   SizedBox(
                     height: 10,
                   ),
