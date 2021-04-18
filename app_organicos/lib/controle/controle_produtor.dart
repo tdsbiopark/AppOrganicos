@@ -13,12 +13,6 @@ class ControleProdutor {
   //Pega o estado no combo;
   Estado estadoSelecionado;
 
-  //Pega a certificadora no combo;
-  Certificadora certificadoraSelecionada;
-
-  //Pega a certificadora no combo;
-  Grupo grupoSelecionada;
-
   //Lista Futura:guarda o que vem do banco
   Future<List<Produtor>> fProdutoresPesquisados;
   //Lista para uso em tela ()Biding, reflete a pesquisa

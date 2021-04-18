@@ -436,7 +436,7 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
                               .toList(),
 
                           //recebe o objeto
-                          value: _controle.certificadoraSelecionada,
+                          value: _controle.produtorEmEdicao.certificadora,
 
                           //validação do campo:
                           validator: (value) {
@@ -446,10 +446,10 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
                             return null;
                           },
 
-                          //ao seleciona ja refelete no objeto
+                          //ao seleciona ja reflete no objeto
                           onChanged: (Certificadora value) {
                             setState(() {
-                              _controle.certificadoraSelecionada = value;
+                              _controle.produtorEmEdicao.certificadora = value;
                             });
                           },
                         );
@@ -494,7 +494,8 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
                               //ja lista
                               .toList(),
                           //recebe o objeto
-                          value: _controle.grupoSelecionada,
+                          value: _controle.produtorEmEdicao.grupo,
+
                           //validação do campo:
                           validator: (value) {
                             if (value == null) {
@@ -505,7 +506,7 @@ class _TelaCadastroProdutorState extends State<TelaCadastroProdutor> {
                           //ao seleciona ja refelete no objeto
                           onChanged: (Grupo value) {
                             setState(() {
-                              _controle.grupoSelecionada = value;
+                              _controle.produtorEmEdicao.grupo = value;
                             });
                           },
                         );
