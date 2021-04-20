@@ -25,6 +25,9 @@ class MyApp extends StatelessWidget {
 }
 */
 
+import 'package:app_organicos/visao/tela_pesquisa_certificadora.dart';
+import 'package:app_organicos/visao/tela_pesquisa_produto.dart';
+import 'package:app_organicos/visao/tela_pesquisa_produtor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 
@@ -103,20 +106,42 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 ListTile(
-                  onTap: () {},
+                  onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                      );
+                  },
                   leading: Icon(Icons.home),
                   title: Text('Home'),
                 ),
                 ListTile(
-                  onTap: () {},
+                  onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => TelaPesquisaProduto()),
+                      );
+                  },
                   leading: Icon(Icons.account_circle_rounded),
-                  title: Text('Profile'),
+                  title: Text('Produto'),                   
                 ),
                 ListTile(
-                  onTap: () {},
-                  leading: Icon(Icons.favorite),
-                  title: Text('Favourites'),
+                  onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => TelaPesquisaProdutor()),
+                      );
+                  },
+                  leading: Icon(Icons.account_circle_rounded),
+                  title: Text('Produtor'),                   
                 ),
+                ListTile(
+                  onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => TelaPesquisaCertificadora()),
+                      );
+                  },
+                  leading: Icon(Icons.account_circle_rounded),
+                  title: Text('Certificadora'),                   
+                ),
+
                 ListTile(
                   onTap: () {},
                   leading: Icon(Icons.settings),
