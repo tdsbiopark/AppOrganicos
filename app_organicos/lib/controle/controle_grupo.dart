@@ -7,7 +7,7 @@ class ControleGrupo {
 
   Grupo grupoEmEdicao = Grupo();
 
-  //Pega o estado no combo;
+  //Pega o estado no combo0;
   Estado estadoSelecionado;
 
   Future<List<Grupo>> fGruposPesquisados;
