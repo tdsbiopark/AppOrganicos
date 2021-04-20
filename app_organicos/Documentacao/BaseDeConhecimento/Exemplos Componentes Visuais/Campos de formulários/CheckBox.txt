@@ -1,8 +1,0 @@
-Checkbox(
-            value: minhaVariavel,
-            onChanged: (bool value) {
-                setState(() {
-                    minhaVariavel = value;
-                });
-            },
-),

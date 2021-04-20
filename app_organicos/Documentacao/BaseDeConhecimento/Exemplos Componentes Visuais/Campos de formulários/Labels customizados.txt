@@ -1,9 +1,0 @@
-Text("Meu texto",
-       style: TextStyle(
-                         color: Colors.white,
-                         fontFamily: "monospace",
-                         fontSize: 18,
-                         fontWeight: FontWeight.normal
-                       ),
-       textAlign: TextAlign.center
-)
