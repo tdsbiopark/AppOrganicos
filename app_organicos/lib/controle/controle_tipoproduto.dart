@@ -17,4 +17,9 @@ class ControleTipoProduto {
   Future<void> atualizarPesquisa({String filtro = ""}) {
     fTipoProdutoPesquisados = _dao.pesquisar(filtro);
   }
+
+  Future<List<TipoProduto>> listar() async {
+    return _dao.listar();
+  }
+
 }
